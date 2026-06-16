@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cristian Dias Trochez - Premium Liquid IPTV</title>
+    <title>Premium Liquid IPTV</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
         :root {
@@ -30,7 +30,7 @@
             scroll-behavior: smooth;
         }
 
-        /* DISEÑO DE PANEL IZQUIERDO PEQUEÑO */
+        /* BOTONERA VERTICAL IZQUIERDA PEQUEÑA CORREGIDA */
         #control-vertical-tv {
             position: fixed;
             left: 15px;
@@ -43,7 +43,7 @@
             background: rgba(10, 15, 24, 0.6);
             padding: 8px;
             border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .btn-control-total {
@@ -68,16 +68,16 @@
             outline: none;
         }
 
+        /* CONTENEDOR FLUIDO CORRECTO */
         .contenido-principal {
-            padding-left: 75px;
-            padding-right: 4%;
+            padding-left: 80px;
+            padding-right: 20px;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         #header-sistema {
             padding: 20px 0 5px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .titulo-marca {
@@ -103,7 +103,7 @@
 
         .seccion-interfaz {
             padding: 10px 0;
-            position: relative;
+            width: 100%;
         }
 
         .titulo-fila {
@@ -140,16 +140,16 @@
             width: 100%;
         }
 
-        /* TARJETAS CON SOPORTE DE ENFOQUE (TABINDEX) */
+        /* TARJETAS LIQUID GLASS */
         .card-canal {
             background: var(--liquid-bg);
             border-radius: 18px;
-            padding: 18px 14px;
+            padding: 15px;
             text-align: left;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            height: 70px;
+            height: 75px;
             width: 190px;
             flex-shrink: 0;
             display: flex;
@@ -159,6 +159,7 @@
             transform: translateZ(0); 
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-sizing: border-box;
         }
 
         .card-canal::before {
@@ -169,7 +170,6 @@
             pointer-events: none;
         }
 
-        /* ENFOQUE TANTO POR CONTROL REMOTO COMO POR MOUSE */
         .card-canal:hover, .card-canal:focus {
             background: var(--liquid-bg-hover);
             transform: scale(1.05) translateZ(0);
@@ -209,7 +209,7 @@
             border-radius: 5px;
         }
 
-        /* FLECHAS DE DIRECCIÓN HORIZONTALES PEQUEÑAS */
+        /* CONTROLES HORIZONTALES PEQUEÑOS */
         .controles-tv-carrusel {
             display: flex;
             gap: 12px;
@@ -233,6 +233,7 @@
             outline: none;
         }
 
+        /* DOCK GENERAL CORREGIDO */
         #dock-apps {
             position: fixed;
             bottom: 20px;
@@ -344,7 +345,7 @@
             }
         }
 
-        // NUEVA FUNCIÓN INTERACTIVA: SOPORTE DE ENFOQUE D-PAD CON EL CONTROL REMOTO
+        // CONTROL D-PAD SUTILA COORDENADO
         document.addEventListener('keydown', function(e) {
             const elementosEnfocables = Array.from(document.querySelectorAll('.card-canal, .btn-tv-flecha, .btn-control-total, .app-icono'));
             let indiceActual = elementosEnfocables.indexOf(document.activeElement);
@@ -355,7 +356,6 @@
                 if (indiceActual > 0) elementosEnfocables[indiceActual - 1].focus();
             } else if (e.key === 'ArrowDown') {
                 navegarVertical('abajo');
-                // Salta al carrusel inferior automáticamente
                 const primerCanalNacional = document.querySelector('#contenedor-canales-dinamicos .card-canal');
                 if (primerCanalNacional) primerCanalNacional.focus();
             } else if (e.key === 'ArrowUp') {
@@ -387,7 +387,7 @@
                         
                         for (let j = 0; j < canalesABorrar.length; j++) {
                             if (nombreMin.indexOf(canalesABorrar[j]) !== -1) {
-                                .deberiaBorrar = true;
+                                deberiaBorrar = true; // CORREGIDO: Se quitó el punto accidental del bug anterior
                                 break;
                             }
                         }
@@ -395,7 +395,7 @@
                         if (!deberiaBorrar) {
                             const card = document.createElement('div');
                             card.className = 'card-canal';
-                            card.tabIndex = 0; // Hace que la tele reconozca la tarjeta mediante teclado/control
+                            card.tabIndex = 0;
                             
                             const tagLive = document.createElement('span');
                             tagLive.className = 'tag-live-premium';
