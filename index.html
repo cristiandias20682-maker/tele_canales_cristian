@@ -3,178 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Canales de Cristian Dias Trochez</title>
+    <title>SISTEMA DE CANALES DE CRISTIAN DIAS TROCHEZ</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
         body {
-            background: #111116;
+            background: #0d0f14;
             color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* BANNER METALIZADO ESTILO PREMIUM */
-        #banner-tecnico {
-            background: linear-gradient(135deg, #1e2530 0%, #131722 100%);
-            border: 2px solid #00bfff;
-            border-radius: 8px;
-            margin: 15px 15px 5px 15px;
-            padding: 18px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .texto-container {
-            flex: 1;
-        }
-
-        .titulo-principal {
-            font-size: 23px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin: 0 0 3px 0;
-            color: #ffffff;
-        }
-
-        .subtitulo-bienvenida {
-            font-size: 15px;
-            color: #00ff9d;
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .tag-sistema {
             font-family: monospace;
-            font-size: 11px;
-            color: #8a99ad;
-            margin-top: 5px;
-            display: inline-block;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden;
         }
-
-        .tv-icon-container {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid #00bfff;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 30px;
+        #banner-tecnico {
+            background: linear-gradient(135deg, #161a24 0%, #0f111a 100%);
+            border-bottom: 2px solid #00bfff; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .titulo-principal { font-size: 20px; color: #00bfff; font-weight: bold; }
+        .status-online { color: #00ff9d; font-size: 12px; }
 
-        /* CONTENEDOR INTERACTIVO PRINCIPAL */
-        #main-layout {
-            display: flex;
-            flex: 1;
-            padding: 10px 15px 15px 15px;
-            gap: 15px;
-            overflow: hidden;
-        }
+        #main-layout { display: flex; flex: 1; padding: 10px; gap: 10px; overflow: hidden; }
+        #panel-canales { width: 30%; background: #141824; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; border: 1px solid #232838; }
+        #lista-botones { flex: 1; overflow-y: auto; }
+        .canal-btn { display: block; width: 100%; background: #1e2330; color: #fff; border: 1px solid #2d3446; padding: 12px; margin-bottom: 8px; border-radius: 4px; text-align: left; cursor: pointer; }
+        .canal-btn:hover { border-color: #00bfff; background: #252b3a; }
+        .canal-btn.active { background: #ff4757; border-color: #ff6b81; font-weight: bold; }
 
-        /* Lista de Canales (Izquierda) */
-        #panel-canales {
-            width: 30%;
-            background: #161a24;
-            border-radius: 6px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #252d3d;
-        }
-
-        .seccion-titulo {
-            color: #ff4757;
-            font-size: 14px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0 0 12px 0;
-        }
-
-        #lista-botones {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        /* Botones del menú */
-        .canal-btn {
-            display: block;
-            width: 100%;
-            background: #202634;
-            color: #edf2f7;
-            border: 1px solid #2d3446;
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .canal-btn:hover {
-            background: #2b354a;
-            border-color: #00bfff;
-            transform: translateX(2px);
-        }
-
-        .canal-btn.active {
-            background: #ff4757;
-            color: #fff;
-            border-color: #ff6b81;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
-        }
-
-        /* Monitor de Video (Derecha) */
-        #panel-video {
-            width: 70%;
-            background: #000;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #252d3d;
-        }
-
-        #reproductor-tv {
-            width: 100%;
-            height: 100%;
-            border-radius: 6px;
-        }
-
-        /* Diseño del scrollbar de canales */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #161a24; }
-        ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00bfff; }
+        #panel-video { width: 70%; background: #000; border-radius: 6px; display: flex; align-items: center; justify-content: center; border: 1px solid #232838; }
+        #reproductor-tv { width: 100%; height: 100%; }
     </style>
 </head>
 <body>
 
     <div id="banner-tecnico">
-        <div class="texto-container">
-            <div class="titulo-principal">Sistema de Canales de Cristian Dias Trochez</div>
-            <div class="subtitulo-bienvenida">¡Hola, Bienvenido!</div>
-            <div class="tag-sistema">[ DATA_STREAMS / HONDURAS ]</div>
-        </div>
-        <div class="tv-icon-container">📺</div>
+        <div class="titulo-principal">SISTEMA DE CANALES DE CRISTIAN DIAS TROCHEZ</div>
+        <div class="status-online">● TERMINAL CONECTADA EXITOSAMENTE</div>
     </div>
 
     <div id="main-layout">
         <div id="panel-canales">
-            <div class="seccion-titulo">Canales en Vivo (Estables)</div>
-            <div id="lista-botones"></div>
+            <p style="color: #ff4757; font-weight: bold; margin-top: 0; font-size: 12px;">[ ENLACES VERIFICADOS ]</p>
+            <div id="lista-botones">Cargando frecuencias de red...</div>
         </div>
-
         <div id="panel-video">
             <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
         </div>
@@ -182,38 +51,45 @@
 
     <script src="https://vjs.zencdn.net/7.20.3/video-js.js"></script>
     <script>
-        // LISTA DE ENLACES VERIFICADOS DE HONDURAS
-        const CANALES_LOCALES = [
-            { nombre: "Canal 5 (Honduras) [Not 24/7]", url: "https://televicentro.sustream.com/live/canal5/playlist.m3u8" },
-            { nombre: "HCH (Hable Como Habla)", url: "https://hch.sustream.com/live/hch/playlist.m3u8" },
-            { nombre: "Telecadena 7 y 4", url: "https://televicentro.sustream.com/live/telecadena/playlist.m3u8" },
-            { nombre: "VTV Honduras", url: "https://vtv.sustream.com/live/vtv/playlist.m3u8" },
-            { nombre: "Tigo Sports HN", url: "https://tigosports.sustream.com/live/tigo/playlist.m3u8" },
-            { nombre: "Deportes TVC", url: "https://televicentro.sustream.com/live/deportestvc/playlist.m3u8" }
-        ];
-
         var player = videojs('reproductor-tv', { fluid: true });
+        const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
-        function cargarCanales() {
-            const contenedor = document.getElementById('lista-botones');
-            contenedor.innerHTML = '';
-
-            CANALES_LOCALES.forEach(canal => {
-                let boton = document.createElement('button');
-                boton.className = 'canal-btn';
-                boton.innerText = canal.nombre;
+        async function cargarCanales() {
+            try {
+                const contenedor = document.getElementById('lista-botones');
+                const respuesta = await fetch(URL_M3U);
+                const texto = await respuesta.text();
+                const lineas = texto.split('\n');
                 
-                boton.onclick = function() {
-                    player.src({ type: 'application/x-mpegURL', src: canal.url });
-                    player.play();
-                    document.querySelectorAll('.canal-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                };
-                contenedor.appendChild(boton);
-            });
+                contenedor.innerHTML = '';
+                let nombreCanal = '';
+
+                lineas.forEach(linea => {
+                    if (linea.startsWith('#EXTINF:')) {
+                        nombreCanal = linea.split(',')[1] || 'Canal';
+                    } else if (linea.startsWith('http')) {
+                        let urlCanal = linea.trim();
+                        if (nombreCanal) {
+                            let boton = document.createElement('button');
+                            boton.className = 'canal-btn';
+                            boton.innerText = `> STREAM: ${nombreCanal.trim()}`;
+                            
+                            boton.onclick = function() {
+                                player.src({ type: 'application/x-mpegURL', src: urlCanal });
+                                player.play();
+                                document.querySelectorAll('.canal-btn').forEach(b => b.classList.remove('active'));
+                                this.classList.add('active');
+                            };
+                            contenedor.appendChild(boton);
+                            nombreCanal = '';
+                        }
+                    }
+                });
+            } catch (e) {
+                document.getElementById('lista-botones').innerHTML = 'Error de red en matriz.';
+            }
         }
 
-        // Ejecutar la carga directa al abrir la web
         window.onload = cargarCanales;
     </script>
 </body>
