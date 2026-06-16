@@ -7,27 +7,26 @@
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
         :root {
-            --bg-glass: rgba(33, 38, 46, 0.75);
-            --bg-card: rgba(43, 50, 61, 0.85);
-            --bg-card-hover: rgba(58, 67, 81, 0.95);
-            --border-card: rgba(255, 255, 255, 0.08);
+            --bg-glass: rgba(25, 32, 45, 0.65);
+            --bg-glass-hover: rgba(40, 52, 74, 0.85);
+            --liquid-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --cyan-glow: rgba(0, 191, 255, 0.4);
             --text-main: #edf2f7;
             --text-sub: #a0aec0;
-            --verde-neon: #00ff9d;
-            --azul-premium: #2b6cb0;
         }
 
         body {
-            background: radial-gradient(circle at 50% 30%, #1e2530 0%, #0f1319 70%, #0a0c0f 100%);
+            background: radial-gradient(circle at 50% 30%, #1a2230 0%, #0d1117 70%, #07090d 100%);
             color: var(--text-main);
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* ENCABEZADO INTEGRADO PREMIUM */
+        /* ENCABEZADO */
         #header-sistema {
             padding: 25px 4% 10px 4%;
             display: flex;
@@ -38,7 +37,6 @@
         .titulo-marca {
             font-size: 20px;
             font-weight: 700;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
             color: #ffffff;
             margin: 0;
@@ -46,7 +44,7 @@
 
         .sub-tag {
             font-size: 13px;
-            color: var(--verde-neon);
+            color: #00ff9d;
             margin-top: 4px;
             font-weight: 500;
         }
@@ -55,10 +53,9 @@
             text-align: right;
             font-size: 12px;
             color: var(--text-sub);
-            line-height: 1.5;
         }
 
-        /* REPRODUCTOR INTEGRADO OCULTO QUE APARECE AL DAR PLAY */
+        /* REPRODUCTOR */
         #contenedor-reproductor {
             width: 92%;
             max-width: 1100px;
@@ -67,14 +64,14 @@
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            box-shadow: var(--glass-shadow);
             display: none;
         }
         #contenedor-reproductor.activo {
             display: block;
         }
 
-        /* SECCIONES Y CONTENEDORES DE FILAS */
+        /* SECCIONES */
         .seccion-interfaz {
             padding: 5px 4% 20px 4%;
         }
@@ -85,60 +82,58 @@
             text-transform: uppercase;
             letter-spacing: 0.8px;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
         .titulo-fila.mundial { color: #48bb78; }
         .titulo-fila.canales { color: #3182ce; }
-        .titulo-fila.secundaria { color: #718096; margin-top: 15px;}
 
-        /* REJILLAS DE TARJETAS ALINEADAS COMO LA FOTO */
-        .grid-tv Bro {
+        /* REJILLA HORIZONTAL FORZADA A CUADRITOS */
+        .grid-cuadros {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+            gap: 15px !important;
+            width: 100%;
         }
 
-        /* DISEÑO EXACTO DE LAS TARJETAS (CARDS) DE LA FOTO */
+        /* EFECTO LIQUID GLASS EN LAS TARJETAS */
         .card-canal {
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--liquid-border);
             border-radius: 14px;
-            padding: 22px 14px;
+            padding: 20px 15px;
             text-align: left;
             cursor: pointer;
             position: relative;
             overflow: hidden;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 58px;
+            min-height: 65px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: var(--glass-shadow);
         }
 
         .card-canal:hover {
-            background: var(--bg-card-hover);
-            transform: translateY(-2px);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: var(--bg-glass-hover);
+            transform: translateY(-3px);
+            border-color: rgba(0, 191, 255, 0.5);
+            box-shadow: 0 8px 25px var(--cyan-glow);
         }
 
-        /* BORDE ARCOÍRIS BRILLANTE PARA EL CANAL SELECCIONADO (DIOS TE VE KIDS EN LA FOTO) */
+        /* CANAL SELECCIONADO (BORDE DE NEÓN BRILLANTE) */
         .card-canal.activo {
-            background: #1e242e;
-            box-shadow: 0 0 0 2px #00ff9d, 0 8px 25px rgba(0, 255, 157, 0.2);
+            border-color: #00ff9d;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            background: rgba(25, 45, 38, 0.8);
         }
 
-        /* TEXTO DEL INTERIOR DE LA TARJETA */
         .canal-meta {
             font-size: 10px;
             color: #63b3ed;
             font-weight: bold;
             text-transform: uppercase;
             margin-bottom: 4px;
-            letter-spacing: 0.3px;
         }
 
         .canal-titulo-texto {
@@ -148,7 +143,7 @@
             line-height: 1.3;
         }
 
-        /* ETIQUETA DIAMANTE ROJA DE "LIVE" EN LA ESQUINA */
+        /* ETIQUETA LIVE DIAMANTE */
         .tag-live-premium {
             position: absolute;
             top: 10px;
@@ -159,65 +154,55 @@
             font-weight: 800;
             padding: 2px 6px;
             border-radius: 4px;
-            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 3px;
             box-shadow: 0 2px 6px rgba(229, 62, 62, 0.4);
         }
 
-        .tag-live-premium::before {
-            content: '♦';
-            color: #fff;
-            font-size: 7px;
-        }
-
-        /* BOTONES SUPERIORES DEL MUNDIAL DE LA FOTO */
+        /* BOTONES MUNDIAL */
         .card-mundial {
-            background: linear-gradient(135deg, #2b4c7e 0%, #1a365d 100%);
-            border: 1px solid rgba(66, 153, 225, 0.3);
+            background: linear-gradient(135deg, rgba(43, 108, 176, 0.6) 0%, rgba(26, 54, 93, 0.7) 100%);
         }
         .card-mundial.tvc {
-            background: linear-gradient(135deg, #9b2c2c 0%, #651a1a 100%);
-            border: 1px solid rgba(229, 62, 62, 0.3);
+            background: linear-gradient(135deg, rgba(229, 62, 62, 0.6) 0%, rgba(155, 44, 44, 0.7) 100%);
         }
 
-        /* MENÚ DE APPS INFERIOR FLOTANTE (ESTILO ANDROID TV) */
+        /* MENÚ DE APPS INFERIOR FLOTANTE (LIQUID GLASS) */
         #dock-apps {
             position: fixed;
-            bottom: 15px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 25, 33, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.06);
-            padding: 8px 18px;
-            border-radius: 20px;
+            background: rgba(15, 22, 33, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 22px;
+            border-radius: 24px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            gap: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             z-index: 9999;
         }
 
         .app-icono {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
-            font-weight: bold;
-            color: white;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .app-icono:hover { transform: scale(1.15); }
+        .app-icono:hover { 
+            transform: scale(1.2) translateY(-3px); 
+        }
 
-        /* RELLENO INFERIOR PARA QUE EL MENÚ FLOTANTE NO TAPE NADA */
-        .espacio-final { height: 90px; }
+        .espacio-final { height: 110px; }
     </style>
 </head>
 <body>
@@ -239,7 +224,7 @@
 
     <div class="seccion-interfaz">
         <div class="titulo-fila mundial">⚽ SEÑAL OFICIAL MUNDIAL (WEB DIRECTA)</div>
-        <div class="grid-tv Bro">
+        <div class="grid-cuadros">
             <div class="card-canal card-mundial" onclick="window.open('https://www.televicentro.com', '_blank')">
                 <span class="tag-live-premium" style="background: #2b6cb0;">WEB</span>
                 <div class="canal-meta">Televicentro</div>
@@ -255,37 +240,32 @@
 
     <div class="seccion-interfaz">
         <div class="titulo-fila canales">🌐 CANALES EN VIVO (AUTOMÁTICOS)</div>
-        <div class="grid-tv Bro" id="contenedor-canales-dinamicos">
+        <div class="grid-cuadros" id="contenedor-canales-dinamicos">
             </div>
-
-        <div class="titulo-fila secundaria">🛋️ FILA POPULARES</div>
-        <div class="grid-tv Bro">
-            <div class="card-canal" style="opacity: 0.3; cursor: default;"><div class="canal-titulo-texto">—</div></div>
-            <div class="card-canal" style="opacity: 0.3; cursor: default;"><div class="canal-titulo-texto">—</div></div>
-            <div class="card-canal" style="opacity: 0.3; cursor: default;"><div class="canal-titulo-texto">—</div></div>
-            <div class="card-canal" style="opacity: 0.3; cursor: default;"><div class="canal-titulo-texto">—</div></div>
-        </div>
     </div>
 
     <div id="dock-apps">
-        <div class="app-icono" style="background:#e50914;">N</div>
-        <div class="app-icono" style="background:#ff0000;">YT</div>
-        <div class="app-icono" style="background:#00a8e1;">Prime</div>
-        <div class="app-icono" style="background:#4a5568; font-size:16px;">⚙️</div>
+        <div class="app-icono" style="background: #ff0000;" onclick="window.open('https://www.youtube.com', '_blank')">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <div class="app-icono" style="background: #e50914;" onclick="window.open('https://www.netflix.com', '_blank')">
+            <span style="font-weight:900; font-size:18px;">N</span>
+        </div>
+        <div class="app-icono" style="background: #00a8e1; font-size:11px; font-weight:bold;" onclick="window.open('https://www.primevideo.com', '_blank')">
+            prime
+        </div>
+        <div class="app-icono" style="background: #2d3748; font-size: 18px;">
+            ⚙️
+        </div>
     </div>
 
     <div class="espacio-final"></div>
 
     <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
     <script>
-        var player = videojs('reproductor-tv', {
-            fluid: true,
-            playbackRates: [0.5, 1, 1.5, 2]
-        });
-        
+        var player = videojs('reproductor-tv', { fluid: true });
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
-        // Filtro de exclusión de canales caídos
         const canalesABorrar = [
             "alfa & omega vision", "aviva tv", "campus tv", 
             "canal 5 el líder", "canal 7 talanga visión", 
@@ -307,7 +287,7 @@
 
                 lineas.forEach(linea => {
                     if (linea.startsWith('#EXTINF:')) {
-                        nombreCanal = linea.split(',')[1] || 'Canal de Transmisión';
+                        nombreCanal = linea.split(',')[1] || 'Canal';
                         nombreCanal = nombreCanal.trim();
                     } else if (linea.startsWith('http')) {
                         let urlCanal = linea.trim();
@@ -316,7 +296,6 @@
                             let deberiaBorrar = canalesABorrar.some(canal => nombreMin.includes(canal));
 
                             if (!deberiaBorrar) {
-                                // Creación de la tarjeta estructurada
                                 let card = document.createElement('div');
                                 card.className = 'card-canal';
                                 
@@ -325,20 +304,16 @@
                                 tagLive.innerText = 'LIVE';
                                 card.appendChild(tagLive);
 
-                                // Nombre corto superior (Meta tag)
                                 let metaTag = document.createElement('div');
                                 metaTag.className = 'canal-meta';
-                                // Extrae la primera palabra o siglas para simular la red corporativa
                                 metaTag.innerText = nombreCanal.split(' ')[0];
                                 card.appendChild(metaTag);
 
-                                // Nombre completo del canal
                                 let tituloTexto = document.createElement('div');
                                 tituloTexto.className = 'canal-titulo-texto';
                                 tituloTexto.innerText = nombreCanal;
                                 card.appendChild(tituloTexto);
                                 
-                                // Acción interactiva del reproductor
                                 card.onclick = function() {
                                     const reproductorContenedor = document.getElementById('contenedor-reproductor');
                                     reproductorContenedor.classList.add('activo');
@@ -350,7 +325,7 @@
 
                                     const todasLasTarjetas = contenedor.querySelectorAll('.card-canal');
                                     todasLasTarjetas.forEach(t => t.classList.remove('activo'));
-                                    this.classList.add('active'); // Aplica el resalte de la foto
+                                    this.classList.add('activo');
                                 };
                                 
                                 contenedor.appendChild(card);
@@ -361,8 +336,7 @@
                 });
 
             } catch (error) {
-                console.error("Error cargando la rejilla premium:", error);
-                document.getElementById('contenedor-canales-dinamicos').innerHTML = '<p style="color:#e53e3e; padding:20px;">Error al enlazar frecuencias dinámicas.</p>';
+                console.error("Error:", error);
             }
         }
 
