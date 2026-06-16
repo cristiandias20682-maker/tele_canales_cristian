@@ -111,4 +111,154 @@
             text-transform: uppercase;
             margin-top: 0;
             margin-bottom: 5px;
-            letter-
+            letter-spacing: 0.5px;
+        }
+
+        .subseccion-titulo {
+            color: #00bfff;
+            font-size: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #lista-botones {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .canal-btn {
+            display: block;
+            width: 100%;
+            background: #202634;
+            color: #edf2f7;
+            border: 1px solid #2d3748;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .canal-btn:hover {
+            background: #2b354a;
+            border-color: #00bfff;
+            transform: translateX(2px);
+        }
+
+        .canal-btn.active {
+            background: #ff4757;
+            color: #fff;
+            border-color: #ff6b81;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
+        }
+
+        #panel-video {
+            width: 70%;
+            background: #000;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 1px solid #252d3d;
+        }
+
+        #reproductor-tv {
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #161a24; }
+        ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00bfff; }
+    </style>
+</head>
+<body>
+
+    <div id="banner-tecnico">
+        <div class="texto-container">
+            <div class="titulo-principal">Sistema de Canales de Cristian Dias Trochez</div>
+            <div class="subtitulo-bienvenida">¡Hola, Bienvenido!</div>
+            <div class="tag-sistema">[ DATA_STREAMS / HONDURAS ]</div>
+        </div>
+        <div class="tv-icon-container">📺</div>
+    </div>
+
+    <div id="main-layout">
+        <div id="panel-canales">
+            <div class="seccion-titulo">Canales en Vivo (Automáticos)</div>
+            <div class="subseccion-titulo">🌐 Canales Comunitarios (Automáticos)</div>
+            <div id="lista-botones">
+                <p style="color: #718096; font-size: 13px;">Sincronizando frecuencias...</p>
+            </div>
+        </div>
+
+        <div id="panel-video">
+            <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
+        </div>
+    </div>
+
+    <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
+    <script>
+        var player = videojs('reproductor-tv', {
+            fluid: true,
+            playbackRates: [0.5, 1, 1.5, 2]
+        });
+        
+        const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
+
+        async function cargarCanales() {
+            try {
+                const contenedor = document.getElementById('lista-botones');
+                const respuesta = await fetch(URL_M3U);
+                const texto = await respuesta.text();
+                const lineas = texto.split('\n');
+                
+                contenedor.innerHTML = '';
+                let nombreCanal = '';
+
+                lineas.forEach(linea => {
+                    if (linea.startsWith('#EXTINF:')) {
+                        nombreCanal = linea.split(',')[1] || 'Canal de Transmisión';
+                        nombreCanal = nombreCanal.trim();
+                    } else if (linea.startsWith('http')) {
+                        let urlCanal = linea.trim();
+                        if (nombreCanal) {
+                            let boton = document.createElement('button');
+                            boton.className = 'canal-btn';
+                            boton.innerText = nombreCanal;
+                            
+                            boton.onclick = function() {
+                                player.src({ type: 'application/x-mpegURL', src: urlCanal });
+                                player.play();
+                                
+                                const botones = contenedor.querySelectorAll('.canal-btn');
+                                botones.forEach(b => b.classList.remove('active'));
+                                this.classList.add('active');
+                            };
+                            
+                            contenedor.appendChild(boton);
+                            nombreCanal = '';
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error cargando streams:", error);
+                document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
+            }
+        }
+
+        cargarCanales();
+    </script>
+</body>
+</html>
