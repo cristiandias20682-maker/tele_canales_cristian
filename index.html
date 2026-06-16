@@ -114,13 +114,26 @@
             letter-spacing: 0.5px;
         }
 
+        .seccion-titulo.web-directa {
+            color: #00ff9d;
+            margin-top: 10px;
+        }
+
         .subseccion-titulo {
             color: #00bfff;
             font-size: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 5px;
+        }
+
+        #panel-externo {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px dashed #2d3748;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 15px;
         }
 
         #lista-botones {
@@ -149,6 +162,18 @@
             background: #2b354a;
             border-color: #00bfff;
             transform: translateX(2px);
+        }
+
+        .btn-oficial {
+            background: linear-gradient(135deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
+            color: white;
+            border: none;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn-oficial:hover {
+            background: linear-gradient(135deg, #4364f7 0%, #6fb1fc 100%);
+            border-color: transparent;
         }
 
         .canal-btn.active {
@@ -195,6 +220,13 @@
 
     <div id="main-layout">
         <div id="panel-canales">
+            <div class="seccion-titulo web-directa">⚽ SEÑAL OFICIAL MUNDIAL</div>
+            <div class="subseccion-titulo">🚀 Transmisión Web (Sin Bloqueos)</div>
+            <div id="panel-externo">
+                <button class="canal-btn btn-oficial" onclick="window.open('https://www.televicentro.com', '_blank')">📺 Ver CANAL 5 (Oficial)</button>
+                <button class="canal-btn btn-oficial" style="background: #ff4757;" onclick="window.open('https://www.deportestvc.com', '_blank')">🔥 Ver DEPORTES TVC</button>
+            </div>
+
             <div class="seccion-titulo">Canales en Vivo (Automáticos)</div>
             <div class="subseccion-titulo">🌐 Canales Comunitarios (Automáticos)</div>
             <div id="lista-botones">
