@@ -226,14 +226,47 @@
         // Enlace automático de la base de datos IPTV de Honduras
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
+        // Lista de Canales Fijos Estables y Verificados (Aparecerán arriba)
+        const CANALES_FIJOS = [
+            { nombre: "★ Canal 5 El Líder (TVC)", url: "https://televicentro.sustream.com/live/canal5/playlist.m3u8" },
+            { nombre: "★ HCH En Vivo", url: "https://hch.sustream.com/live/hch/playlist.m3u8" },
+            { nombre: "★ Telecadena 7 y 4 (TVC)", url: "https://televicentro.sustream.com/live/telecadena/playlist.m3u8" },
+            { nombre: "★ TSi Honduras (TVC)", url: "https://televicentro.sustream.com/live/tsi/playlist.m3u8" },
+            { nombre: "★ Deportes TVC", url: "https://televicentro.sustream.com/live/deportestvc/playlist.m3u8" },
+            { nombre: "★ Canal 11 Honduras", url: "https://canal11.sustream.com/live/canal11/playlist.m3u8" },
+            { nombre: "★ VTV Honduras", url: "https://vtv.sustream.com/live/vtv/playlist.m3u8" }
+        ];
+
         async function cargarCanales() {
             try {
                 const contenedor = document.getElementById('lista-botones');
+                
+                // Primero limpiamos el contenedor
+                contenedor.innerHTML = '';
+
+                // 1. Inyectamos los canales fijos estables al principio de la lista
+                CANALES_FIJOS.forEach(canal => {
+                    let boton = document.createElement('button');
+                    boton.className = 'canal-btn';
+                    boton.innerText = canal.nombre;
+                    
+                    boton.onclick = function() {
+                        player.src({ type: 'application/x-mpegURL', src: canal.url });
+                        player.play();
+                        
+                        const botones = contenedor.querySelectorAll('.canal-btn');
+                        botones.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                    };
+                    
+                    contenedor.appendChild(boton);
+                });
+
+                // 2. Cargamos dinámicamente el resto de la lista automática de Honduras
                 const respuesta = await fetch(URL_M3U);
                 const texto = await respuesta.text();
                 const lineas = texto.split('\n');
                 
-                contenedor.innerHTML = '';
                 let nombreCanal = '';
 
                 lineas.forEach(linea => {
@@ -264,7 +297,10 @@
 
             } catch (error) {
                 console.error("Error cargando streams:", error);
-                document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
+                // Si falla el fetch de la lista externa, el catch mantendrá los fijos o mostrará error si nada funcionó
+                if(document.getElementById('lista-botones').children.length === 0) {
+                    document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
+                }
             }
         }
 
