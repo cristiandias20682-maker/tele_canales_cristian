@@ -6,48 +6,33 @@
     <title>SISTEMA DE CANALES DE CRISTIAN DIAS TROCHEZ</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
-        body {
-            background: #0d0f14;
-            color: #fff;
-            font-family: monospace;
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; height: 100vh; overflow: hidden;
-        }
-        #banner-tecnico {
-            background: linear-gradient(135deg, #161a24 0%, #0f111a 100%);
-            border-bottom: 2px solid #00bfff; padding: 15px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        body { background: #0d0f14; color: #fff; font-family: monospace; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        #banner-tecnico { background: linear-gradient(135deg, #161a24 0%, #0f111a 100%); border-bottom: 2px solid #00bfff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .titulo-principal { font-size: 20px; color: #00bfff; font-weight: bold; }
         .status-online { color: #00ff9d; font-size: 12px; }
-
         #main-layout { display: flex; flex: 1; padding: 10px; gap: 10px; overflow: hidden; }
         #panel-canales { width: 30%; background: #141824; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; border: 1px solid #232838; }
         #lista-botones { flex: 1; overflow-y: auto; }
-        .canal-btn { display: block; width: 100%; background: #1e2330; color: #fff; border: 1px solid #2d3446; padding: 12px; margin-bottom: 8px; border-radius: 4px; text-align: left; cursor: pointer; font-family: monospace;}
+        .canal-btn { display: block; width: 100%; background: #1e2330; color: #fff; border: 1px solid #2d3446; padding: 10px; margin-bottom: 6px; border-radius: 4px; text-align: left; cursor: pointer; font-family: monospace; font-size: 12px; }
         .canal-btn:hover { border-color: #00bfff; background: #252b3a; }
         .canal-btn.active { background: #ff4757; border-color: #ff6b81; font-weight: bold; }
-
         #panel-video { width: 70%; background: #000; border-radius: 6px; display: flex; align-items: center; justify-content: center; border: 1px solid #232838; }
         #reproductor-tv { width: 100%; height: 100%; }
-        
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #141824; }
         ::-webkit-scrollbar-thumb { background: #2d3446; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00bfff; }
     </style>
 </head>
 <body>
 
     <div id="banner-tecnico">
         <div class="titulo-principal">SISTEMA DE CANALES DE CRISTIAN DIAS TROCHEZ</div>
-        <div class="status-online">● TERMINAL EN LINEA</div>
+        <div class="status-online" id="status-text">● CARGANDO BASE DE DATOS...</div>
     </div>
 
     <div id="main-layout">
         <div id="panel-canales">
-            <p style="color: #ff4757; font-weight: bold; margin-top: 0; font-size: 12px;">[ FRECUENCIAS DIRECTAS ]</p>
-            <div id="lista-botones">Cargando canales...</div>
+            <p style="color: #ff4757; font-weight: bold; margin-top: 0; font-size: 12px;">[ ACCESO TOTAL ]</p>
+            <div id="lista-botones">Conectando al servidor...</div>
         </div>
         <div id="panel-video">
             <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
@@ -57,14 +42,46 @@
     <script src="https://vjs.zencdn.net/7.20.3/video-js.js"></script>
     <script>
         var player = videojs('reproductor-tv', { fluid: true });
+        const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
-        // LISTA REAL FIJA - Canales estables que sí cargan directo sin errores
-        const CANALES = [
-            // --- HONDURAS ---
-            { n: "Canal 5 El Líder (HN)", u: "https://televicentro.sustream.com/live/canal5/playlist.m3u8" },
-            { n: "HCH (Hable Como Habla)", u: "https://hch.sustream.com/live/hch/playlist.m3u8" },
-            { n: "Telecadena 7 y 4 (HN)", u: "https://televicentro.sustream.com/live/telecadena/playlist.m3u8" },
-            { n: "VTV Honduras", u: "https://vtv.sustream.com/live/vtv/playlist.m3u8" },
-            { n: "Canal 11 (HN)", u: "https://canal11.sustream.com/live/canal11/playlist.m3u8" },
-            { n: "Suyapa TV", u: "
+        async function cargarCanales() {
+            const contenedor = document.getElementById('lista-botones');
+            const status = document.getElementById('status-text');
+            
+            try {
+                const respuesta = await fetch(URL_M3U);
+                const texto = await respuesta.text();
+                const lineas = texto.split('\n');
                 
+                contenedor.innerHTML = '';
+                let nombre = '';
+                let count = 0;
+
+                lineas.forEach(linea => {
+                    if (linea.startsWith('#EXTINF:')) {
+                        nombre = linea.split(',')[1];
+                    } else if (linea.startsWith('http') && nombre) {
+                        let btn = document.createElement('button');
+                        btn.className = 'canal-btn';
+                        btn.innerText = `📺 ${nombre.trim()}`;
+                        btn.onclick = function() {
+                            player.src({ type: 'application/x-mpegURL', src: linea.trim() });
+                            player.play();
+                            document.querySelectorAll('.canal-btn').forEach(b => b.classList.remove('active'));
+                            this.classList.add('active');
+                        };
+                        contenedor.appendChild(btn);
+                        count++;
+                        nombre = '';
+                    }
+                });
+                status.innerText = `● TERMINAL CONECTADA (CARGADOS ${count} CANALES)`;
+            } catch (e) {
+                contenedor.innerHTML = 'Error de conexión. Intente refrescar.';
+                status.innerText = '● ERROR DE RED';
+            }
+        }
+        window.onload = cargarCanales;
+    </script>
+</body>
+</html>
