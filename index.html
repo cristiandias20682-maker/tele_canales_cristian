@@ -33,7 +33,6 @@
             overflow: hidden;
         }
 
-        /* Efecto de líneas de circuito de fondo */
         #banner-tecnico::before {
             content: '';
             position: absolute;
@@ -75,7 +74,6 @@
             margin-top: 8px;
         }
 
-        /* Icono de TV estilo tecnológico */
         .tv-icon-container {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid #00bfff;
@@ -88,7 +86,6 @@
             justify-content: center;
         }
 
-        /* CONTENEDOR PRINCIPAL INTERACTIVO */
         #main-layout {
             display: flex;
             flex: 1;
@@ -97,7 +94,6 @@
             overflow: hidden;
         }
 
-        /* Lista de Canales (Izquierda) */
         #panel-canales {
             width: 30%;
             background: #161a24;
@@ -118,13 +114,26 @@
             letter-spacing: 0.5px;
         }
 
+        .seccion-titulo.web-directa {
+            color: #00ff9d;
+            margin-top: 10px;
+        }
+
         .subseccion-titulo {
             color: #00bfff;
             font-size: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 5px;
+        }
+
+        #panel-externo {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px dashed #2d3748;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 15px;
         }
 
         #lista-botones {
@@ -133,7 +142,6 @@
             padding-right: 5px;
         }
 
-        /* Botones del menú */
         .canal-btn {
             display: block;
             width: 100%;
@@ -156,6 +164,19 @@
             transform: translateX(2px);
         }
 
+        /* Botón especial para abrir webs oficiales fuera de la app */
+        .btn-oficial {
+            background: linear-gradient(135deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
+            color: white;
+            border: none;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn-oficial:hover {
+            background: linear-gradient(135deg, #4364f7 0%, #6fb1fc 100%);
+            border-color: transparent;
+        }
+
         .canal-btn.active {
             background: #ff4757;
             color: #fff;
@@ -164,7 +185,6 @@
             box-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
         }
 
-        /* Monitor de Video (Derecha) */
         #panel-video {
             width: 70%;
             background: #000;
@@ -182,7 +202,6 @@
             border-radius: 6px;
         }
 
-        /* Scrollbar del panel de canales */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #161a24; }
         ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 3px; }
@@ -197,15 +216,21 @@
             <div class="subtitulo-bienvenida">¡Hola, Bienvenido!</div>
             <div class="tag-sistema">[ DATA_STREAMS / HONDURAS ]</div>
         </div>
-        <div class="tv-icon-container">
-            📺
-        </div>
+        <div class="tv-icon-container">📺</div>
     </div>
 
     <div id="main-layout">
         <div id="panel-canales">
+            <div class="seccion-titulo web-directa">⚽ SEÑAL OFICIAL MUNDIAL</div>
+            <div class="subseccion-titulo">🚀 Abre en pestaña nueva (Sin Bloqueos)</div>
+            <div id="panel-externo">
+                <button class="canal-btn btn-oficial" onclick="window.open('https://www.televicentro.com', '_blank')">📺 Ver CANAL 5 (Televicentro)</button>
+                <button class="canal-btn btn-oficial" style="background: #ff4757;" onclick="window.open('https://www.deportestvc.com', '_blank')">🔥 Ver DEPORTES TVC</button>
+            </div>
+
             <div class="seccion-titulo">Canales en Vivo (Automáticos)</div>
             <div class="subseccion-titulo">🌐 Canales Comunitarios (Automáticos)</div>
+            
             <div id="lista-botones">
                 <p style="color: #718096; font-size: 13px;">Sincronizando frecuencias...</p>
             </div>
@@ -223,7 +248,6 @@
             playbackRates: [0.5, 1, 1.5, 2]
         });
         
-        // Enlace automático de la base de datos IPTV de Honduras
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
         async function cargarCanales() {
