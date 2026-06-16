@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Canales de Cristian Dias Trochez</title>
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
             background: #111116;
@@ -33,7 +33,6 @@
             overflow: hidden;
         }
 
-        /* Efecto de líneas de circuito de fondo */
         #banner-tecnico::before {
             content: '';
             position: absolute;
@@ -75,7 +74,6 @@
             margin-top: 8px;
         }
 
-        /* Icono de TV estilo tecnológico */
         .tv-icon-container {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid #00bfff;
@@ -88,7 +86,6 @@
             justify-content: center;
         }
 
-        /* CONTENEDOR PRINCIPAL INTERACTIVO */
         #main-layout {
             display: flex;
             flex: 1;
@@ -97,7 +94,6 @@
             overflow: hidden;
         }
 
-        /* Lista de Canales (Izquierda) */
         #panel-canales {
             width: 30%;
             background: #161a24;
@@ -133,7 +129,6 @@
             padding-right: 5px;
         }
 
-        /* Botones del menú */
         .canal-btn {
             display: block;
             width: 100%;
@@ -164,7 +159,6 @@
             box-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
         }
 
-        /* Monitor de Video (Derecha) */
         #panel-video {
             width: 70%;
             background: #000;
@@ -176,13 +170,14 @@
             border: 1px solid #252d3d;
         }
 
+        /* Ajuste nativo del reproductor de video */
         #reproductor-tv {
             width: 100%;
             height: 100%;
             border-radius: 6px;
+            background: #000;
         }
 
-        /* Scrollbar del panel de canales */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #161a24; }
         ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 3px; }
@@ -197,9 +192,7 @@
             <div class="subtitulo-bienvenida">¡Hola, Bienvenido!</div>
             <div class="tag-sistema">[ DATA_STREAMS / HONDURAS ]</div>
         </div>
-        <div class="tv-icon-container">
-            📺
-        </div>
+        <div class="tv-icon-container">📺</div>
     </div>
 
     <div id="main-layout">
@@ -212,21 +205,16 @@
         </div>
 
         <div id="panel-video">
-            <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
+            <video id="reproductor-tv" controls autoplay preload="auto"></video>
         </div>
     </div>
 
-    <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
     <script>
-        var player = videojs('reproductor-tv', {
-            fluid: true,
-            playbackRates: [0.5, 1, 1.5, 2]
-        });
-        
-        // Enlace automático de la base de datos IPTV de Honduras
+        const video = document.getElementById('reproductor-tv');
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
+        let hls = null;
 
-        // Lista de Canales Fijos Estables y Verificados (Aparecerán arriba)
+        // Tus canales fijos estables
         const CANALES_FIJOS = [
             { nombre: "★ Canal 5 El Líder (TVC)", url: "https://televicentro.sustream.com/live/canal5/playlist.m3u8" },
             { nombre: "★ HCH En Vivo", url: "https://hch.sustream.com/live/hch/playlist.m3u8" },
@@ -237,32 +225,37 @@
             { nombre: "★ VTV Honduras", url: "https://vtv.sustream.com/live/vtv/playlist.m3u8" }
         ];
 
+        // Función universal para reproducir en Smart TVs
+        function cambiarCanal(url) {
+            if (Hls.isSupported()) {
+                if (hls) { hls.destroy(); }
+                hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play().catch(e => console.log("Autoplay bloqueado"));
+                });
+            } 
+            // Fallback nativo (Muy común en Safari de iOS y navegadores de Smart TVs de marca)
+            else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                });
+            }
+        }
+
         async function cargarCanales() {
             try {
                 const contenedor = document.getElementById('lista-botones');
-                
-                // Primero limpiamos el contenedor
                 contenedor.innerHTML = '';
 
-                // 1. Inyectamos los canales fijos estables al principio de la lista
+                // 1. Inyectamos los canales fijos
                 CANALES_FIJOS.forEach(canal => {
-                    let boton = document.createElement('button');
-                    boton.className = 'canal-btn';
-                    boton.innerText = canal.nombre;
-                    
-                    boton.onclick = function() {
-                        player.src({ type: 'application/x-mpegURL', src: canal.url });
-                        player.play();
-                        
-                        const botones = contenedor.querySelectorAll('.canal-btn');
-                        botones.forEach(b => b.classList.remove('active'));
-                        this.classList.add('active');
-                    };
-                    
-                    contenedor.appendChild(boton);
+                    crearBotonCanal(canal.nombre, canal.url, contenedor);
                 });
 
-                // 2. Cargamos dinámicamente el resto de la lista automática de Honduras
+                // 2. Cargamos el resto de la lista automática
                 const respuesta = await fetch(URL_M3U);
                 const texto = await respuesta.text();
                 const lineas = texto.split('\n');
@@ -276,20 +269,7 @@
                     } else if (linea.startsWith('http')) {
                         let urlCanal = linea.trim();
                         if (nombreCanal) {
-                            let boton = document.createElement('button');
-                            boton.className = 'canal-btn';
-                            boton.innerText = nombreCanal;
-                            
-                            boton.onclick = function() {
-                                player.src({ type: 'application/x-mpegURL', src: urlCanal });
-                                player.play();
-                                
-                                const botones = contenedor.querySelectorAll('.canal-btn');
-                                botones.forEach(b => b.classList.remove('active'));
-                                this.classList.add('active');
-                            };
-                            
-                            contenedor.appendChild(boton);
+                            crearBotonCanal(nombreCanal, urlCanal, contenedor);
                             nombreCanal = '';
                         }
                     }
@@ -297,11 +277,22 @@
 
             } catch (error) {
                 console.error("Error cargando streams:", error);
-                // Si falla el fetch de la lista externa, el catch mantendrá los fijos o mostrará error si nada funcionó
-                if(document.getElementById('lista-botones').children.length === 0) {
-                    document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
-                }
             }
+        }
+
+        function crearBotonCanal(nombre, url, contenedor) {
+            let boton = document.createElement('button');
+            boton.className = 'canal-btn';
+            boton.innerText = nombre;
+            
+            boton.onclick = function() {
+                cambiarCanal(url);
+                const botones = contenedor.querySelectorAll('.canal-btn');
+                botones.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            };
+            
+            contenedor.appendChild(boton);
         }
 
         cargarCanales();
