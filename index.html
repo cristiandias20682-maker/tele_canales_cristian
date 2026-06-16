@@ -223,4 +223,74 @@
             <div class="seccion-titulo web-directa">⚽ SEÑAL OFICIAL MUNDIAL</div>
             <div class="subseccion-titulo">🚀 Transmisión Directa (Sin Bloqueos)</div>
             <div id="panel-externo">
-                <button class="canal-btn btn-oficial" onclick="window.open('https://www
+                <button class="canal-btn btn-oficial" onclick="window.open('https://www.televicentro.com/tvc-en-linea', '_blank')">📺 Ver CANAL 5 (Directo)</button>
+                <button class="canal-btn btn-oficial" style="background: #ff4757;" onclick="window.open('https://www.deportestvc.com/en-vivo', '_blank')">🔥 Ver DEPORTES TVC</button>
+            </div>
+
+            <div class="seccion-titulo">Canales en Vivo (Automáticos)</div>
+            <div class="subseccion-titulo">🌐 Canales Comunitarios (Automáticos)</div>
+            <div id="lista-botones">
+                <p style="color: #718096; font-size: 13px;">Sincronizando frecuencias...</p>
+            </div>
+        </div>
+
+        <div id="panel-video">
+            <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
+        </div>
+    </div>
+
+    <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
+    <script>
+        var player = videojs('reproductor-tv', {
+            fluid: true,
+            playbackRates: [0.5, 1, 1.5, 2]
+        });
+        
+        const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
+
+        async function cargarCanales() {
+            try {
+                const contenedor = document.getElementById('lista-botones');
+                const respuesta = await fetch(URL_M3U);
+                const texto = await respuesta.text();
+                const lineas = texto.split('\n');
+                
+                contenedor.innerHTML = '';
+                let nombreCanal = '';
+
+                lineas.forEach(linea => {
+                    if (linea.startsWith('#EXTINF:')) {
+                        nombreCanal = linea.split(',')[1] || 'Canal de Transmisión';
+                        nombreCanal = nombreCanal.trim();
+                    } else if (linea.startsWith('http')) {
+                        let urlCanal = linea.trim();
+                        if (nombreCanal) {
+                            let boton = document.createElement('button');
+                            boton.className = 'canal-btn';
+                            boton.innerText = nombreCanal;
+                            
+                            boton.onclick = function() {
+                                player.src({ type: 'application/x-mpegURL', src: urlCanal });
+                                player.play();
+                                
+                                const botones = contenedor.querySelectorAll('.canal-btn');
+                                botones.forEach(b => b.classList.remove('active'));
+                                this.classList.add('active');
+                            };
+                            
+                            contenedor.appendChild(boton);
+                            nombreCanal = '';
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error cargando streams:", error);
+                document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
+            }
+        }
+
+        cargarCanales();
+    </script>
+</body>
+</html>
