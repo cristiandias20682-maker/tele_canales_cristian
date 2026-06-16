@@ -6,237 +6,199 @@
     <title>Sistema de Canales de Cristian Dias Trochez</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
-        body {
-            background: #111116;
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+        :root {
+            --bg-principal: #0b0e14;
+            --bg-tarjeta: #1a2232;
+            --bg-hover: #26334d;
+            --cyan-neon: #00bfff;
+            --verde-neon: #00ff9d;
+            --rojo-neon: #ff4757;
         }
 
-        /* BANNER TECNOLÓGICO PREMIUM */
+        body {
+            background-color: var(--bg-principal);
+            color: #ffffff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* BANNER INICIAL */
         #banner-tecnico {
-            background: linear-gradient(135deg, #1e2530 0%, #131722 100%);
-            border: 2px solid #00bfff;
-            border-radius: 8px;
-            margin: 15px 15px 5px 15px;
-            padding: 20px;
+            background: linear-gradient(135deg, #161f30 0%, #0b0e14 100%);
+            border-bottom: 2px solid var(--cyan-neon);
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        #banner-tecnico::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at 80% 50%, rgba(0, 191, 255, 0.1) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .texto-container {
-            flex: 1;
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.15);
         }
 
         .titulo-principal {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
-            letter-spacing: 1px;
             text-transform: uppercase;
-            margin: 0 0 5px 0;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+            margin: 0;
         }
 
         .subtitulo-bienvenida {
-            font-size: 16px;
-            color: #00ff9d;
-            margin: 0;
+            font-size: 14px;
+            color: var(--verde-neon);
+            margin: 3px 0 0 0;
             font-weight: 600;
         }
 
-        .tag-sistema {
-            font-family: monospace;
-            font-size: 12px;
-            color: #8a99ad;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid #2d3748;
-            display: inline-block;
-            margin-top: 8px;
+        /* CONTENEDOR DEL REPRODUCTOR FLOTANTE / INTEGRADO */
+        #contenedor-reproductor {
+            width: 94%;
+            max-width: 1200px;
+            margin: 20px auto 10px auto;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #252d3d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none; /* Se muestra solo cuando se activa un canal */
         }
 
-        .tv-icon-container {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid #00bfff;
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-size: 35px;
-            box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+        #contenedor-reproductor.activo {
+            display: block;
+        }
+
+        /* CONTENEDOR DE FILAS DE CANALES (ESTILO GOOGLE TV) */
+        .seccion-tv {
+            padding: 10px 4%;
+            margin-bottom: 10px;
+        }
+
+        .fila-titulo {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
         }
 
-        #main-layout {
-            display: flex;
-            flex: 1;
-            padding: 10px 15px 15px 15px;
+        .fila-titulo.mundial { color: var(--verde-neon); }
+        .fila-titulo.canales { color: var(--cyan-neon); }
+
+        /* REJILLA HORIZONTAL */
+        .grid-canales {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 15px;
+            padding-bottom: 10px;
+        }
+
+        /* TARJETAS DE CANALES (CARDS) */
+        .canal-card {
+            background: var(--bg-tarjeta);
+            border: 1px solid #252d3d;
+            border-radius: 10px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 70px;
+            position: relative;
             overflow: hidden;
         }
 
-        #panel-canales {
-            width: 30%;
-            background: #161a24;
-            border-radius: 6px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #252d3d;
+        .canal-card:hover {
+            transform: scale(1.05);
+            background: var(--bg-hover);
+            border-color: var(--cyan-neon);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.2);
         }
 
-        .seccion-titulo {
-            color: #ff4757;
+        .canal-card.activo {
+            border-color: var(--rojo-neon);
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+            background: linear-gradient(135deg, #2c161e 0%, #1a0b10 100%);
+        }
+
+        .canal-nombre {
             font-size: 14px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 0;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
-        }
-
-        .seccion-titulo.web-directa {
-            color: #00ff9d;
-            margin-top: 10px;
-        }
-
-        .subseccion-titulo {
-            color: #00bfff;
-            font-size: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #panel-externo {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px dashed #2d3748;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-
-        #lista-botones {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        .canal-btn {
-            display: block;
-            width: 100%;
-            background: #202634;
+            font-weight: 600;
             color: #edf2f7;
-            border: 1px solid #2d3748;
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            word-wrap: break-word;
+            max-width: 100%;
         }
 
-        .canal-btn:hover {
-            background: #2b354a;
-            border-color: #00bfff;
-            transform: translateX(2px);
-        }
-
-        .btn-oficial {
-            background: linear-gradient(135deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
+        /* BADGE DE "LIVE" EN LAS TARJETAS */
+        .badge-live {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--rojo-neon);
             color: white;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        /* BOTONES ESPECIALES PARA EL MUNDIAL (TOP) */
+        .btn-mundial {
+            background: linear-gradient(135deg, #0052d4 0%, #4364f7 100%);
             border: none;
-            font-weight: bold;
-            text-align: center;
         }
-        .btn-oficial:hover {
-            background: linear-gradient(135deg, #4364f7 0%, #6fb1fc 100%);
-            border-color: transparent;
+        .btn-mundial.tvc {
+            background: linear-gradient(135deg, #b31217 0%, #e52d27 100%);
         }
 
-        .canal-btn.active {
-            background: #ff4757;
-            color: #fff;
-            border-color: #ff6b81;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
-        }
-
-        #panel-video {
-            width: 70%;
-            background: #000;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border: 1px solid #252d3d;
-        }
-
-        #reproductor-tv {
-            width: 100%;
-            height: 100%;
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #161a24; }
-        ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00bfff; }
+        /* SCROLLBAR PREMIUM */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-principal); }
+        ::-webkit-scrollbar-thumb { background: #252d3d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--cyan-neon); }
     </style>
 </head>
 <body>
 
     <div id="banner-tecnico">
-        <div class="texto-container">
+        <div>
             <div class="titulo-principal">Sistema de Canales de Cristian Dias Trochez</div>
             <div class="subtitulo-bienvenida">¡Hola, Bienvenido!</div>
-            <div class="tag-sistema">[ DATA_STREAMS / HONDURAS ]</div>
         </div>
-        <div class="tv-icon-container">📺</div>
+        <div style="font-size: 28px;">📺</div>
     </div>
 
-    <div id="main-layout">
-        <div id="panel-canales">
-            <div class="seccion-titulo web-directa">⚽ SEÑAL OFICIAL MUNDIAL</div>
-            <div class="subseccion-titulo">🚀 Transmisión Web (Sin Bloqueos)</div>
-            <div id="panel-externo">
-                <button class="canal-btn btn-oficial" onclick="window.open('https://www.televicentro.com', '_blank')">📺 Ver CANAL 5 (Oficial)</button>
-                <button class="canal-btn btn-oficial" style="background: #ff4757;" onclick="window.open('https://www.deportestvc.com', '_blank')">🔥 Ver DEPORTES TVC</button>
-            </div>
+    <div id="contenedor-reproductor">
+        <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%"></video>
+    </div>
 
-            <div class="seccion-titulo">Canales en Vivo (Filtrados)</div>
-            <div class="subseccion-titulo">🌐 Canales Activos de la Lista M3U</div>
-            <div id="lista-botones">
-                <p style="color: #718096; font-size: 13px;">Cargando lista original...</p>
+    <div class="seccion-tv">
+        <div class="fila-titulo mundial">⚽ SEÑAL OFICIAL MUNDIAL (Web Directa)</div>
+        <div class="grid-canales">
+            <div class="canal-card btn-mundial" onclick="window.open('https://www.televicentro.com', '_blank')">
+                <span class="badge-live">WEB</span>
+                <span class="canal-nombre">📺 Ver CANAL 5 (Oficial)</span>
+            </div>
+            <div class="canal-card btn-mundial tvc" onclick="window.open('https://www.deportestvc.com', '_blank')">
+                <span class="badge-live">WEB</span>
+                <span class="canal-nombre">🔥 Ver DEPORTES TVC</span>
             </div>
         </div>
+    </div>
 
-        <div id="panel-video">
-            <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
-        </div>
+    <div class="seccion-tv">
+        <div class="fila-titulo canales">🌐 CANALES EN VIVO (AUTOMÁTICOS)</div>
+        <div class="grid-canales" id="contenedor-grid">
+            </div>
     </div>
 
     <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
@@ -248,7 +210,7 @@
         
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
-        // Tu lista de canales a borrar (Filtro)
+        // Tu lista de canales eliminados por fallas
         const canalesABorrar = [
             "alfa & omega vision", "aviva tv", "campus tv", 
             "canal 5 el líder", "canal 7 talanga visión", 
@@ -260,7 +222,7 @@
 
         async function cargarCanales() {
             try {
-                const contenedor = document.getElementById('lista-botones');
+                const contenedor = document.getElementById('contenedor-grid');
                 const respuesta = await fetch(URL_M3U);
                 const texto = await respuesta.text();
                 const lineas = texto.split('\n');
@@ -276,26 +238,44 @@
                         let urlCanal = linea.trim();
                         if (nombreCanal) {
                             let nombreMin = nombreCanal.toLowerCase();
-                            
-                            // Comprobar si el canal actual está en la lista de borrados
                             let deberiaBorrar = canalesABorrar.some(canal => nombreMin.includes(canal));
 
-                            // Si no está en la lista negra, lo agrega normalmente
                             if (!deberiaBorrar) {
-                                let boton = document.createElement('button');
-                                boton.className = 'canal-btn';
-                                boton.innerText = nombreCanal;
+                                // Crear la tarjeta estilo Smart TV
+                                let card = document.createElement('div');
+                                card.className = 'canal-card';
                                 
-                                boton.onclick = function() {
+                                // Añadir la etiqueta LIVE
+                                let badge = document.createElement('span');
+                                badge.className = 'badge-live';
+                                badge.innerText = 'LIVE';
+                                card.appendChild(badge);
+
+                                // Añadir el texto del canal
+                                let textoNombre = document.createElement('span');
+                                textoNombre.className = 'canal-nombre';
+                                textoNombre.innerText = nombreCanal;
+                                card.appendChild(textoNombre);
+                                
+                                // Evento al hacer clic en la tarjeta
+                                card.onclick = function() {
+                                    // Activar y mostrar el reproductor de video arriba
+                                    const reproductorContenedor = document.getElementById('contenedor-reproductor');
+                                    reproductorContenedor.classList.add('activo');
+                                    
                                     player.src({ type: 'application/x-mpegURL', src: urlCanal });
                                     player.play();
                                     
-                                    const botones = contenedor.querySelectorAll('.canal-btn');
-                                    botones.forEach(b => b.classList.remove('active'));
-                                    this.classList.add('active');
+                                    // Hacer scroll automático suave hacia el reproductor para ver el canal
+                                    reproductorContenedor.scrollIntoView({ behavior: 'smooth' });
+
+                                    // Marcar tarjeta como activa
+                                    const tarjetas = contenedor.querySelectorAll('.canal-card');
+                                    tarjetas.forEach(t => t.classList.remove('activo'));
+                                    this.classList.add('activo');
                                 };
                                 
-                                contenedor.appendChild(boton);
+                                contenedor.appendChild(card);
                             }
                             nombreCanal = '';
                         }
@@ -303,8 +283,8 @@
                 });
 
             } catch (error) {
-                console.error("Error cargando streams:", error);
-                document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
+                console.error("Error cargando rejilla:", error);
+                document.getElementById('contenedor-grid').innerHTML = '<p style="color:#ff4757;">Error al conectar con la señal.</p>';
             }
         }
 
