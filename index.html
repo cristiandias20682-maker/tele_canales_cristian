@@ -3,47 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cristian Dias Trochez - Premium Stream TV</title>
+    <title>Cristian Dias Trochez - Liquid Glass Premium IPTV</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
-        /* CONFIGURACIÓN DE TEMAS VISUALES */
+        /* PALETA DE COLORES LIQUID GLASS (ESTILO iOS 26 DE TV) */
         :root {
-            --bg-gradiente: radial-gradient(circle at 50% 30%, #161c26 0%, #0d1117 70%, #07090d 100%);
-            --bg-glass: rgba(23, 29, 41, 0.85);
-            --bg-glass-hover: rgba(36, 46, 64, 0.95);
-            --liquid-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            --text-main: #edf2f7;
-            --text-sub: #a0aec0;
-            --cyan-glow: rgba(0, 191, 255, 0.3);
-            --verde-neon: #00ff9d;
-            --canal-meta-color: #63b3ed;
-        }
-
-        [data-theme="claro"] {
-            --bg-gradiente: radial-gradient(circle at 50% 30%, #e2e8f0 0%, #cbd5e0 70%, #a0aec0 100%);
-            --bg-glass: rgba(255, 255, 255, 0.9);
-            --bg-glass-hover: rgba(247, 250, 252, 0.98);
-            --liquid-border: rgba(0, 0, 0, 0.08);
-            --glass-shadow: 0 6px 20px rgba(31, 38, 135, 0.06);
-            --text-main: #1a202c;
-            --text-sub: #4a5568;
-            --cyan-glow: rgba(66, 153, 225, 0.2);
-            --verde-neon: #0ece6c;
-            --canal-meta-color: #2b6cb0;
-        }
-
-        [data-theme="azul"] {
-            --bg-gradiente: radial-gradient(circle at 50% 30%, #00193d 0%, #000c20 70%, #00050f 100%);
-            --bg-glass: rgba(0, 26, 64, 0.85);
-            --bg-glass-hover: rgba(0, 43, 107, 0.95);
-            --liquid-border: rgba(0, 191, 255, 0.15);
-            --glass-shadow: 0 6px 20px rgba(0, 191, 255, 0.15);
-            --text-main: #e2f1ff;
-            --text-sub: #63b3ed;
-            --cyan-glow: rgba(0, 191, 255, 0.5);
-            --verde-neon: #00ffcc;
-            --canal-meta-color: #00bfff;
+            --bg-gradiente: radial-gradient(circle at 50% 30%, #0a111e 0%, #05070b 100%);
+            
+            /* Fondos tipo cápsula de cristal líquido traslúcido */
+            --liquid-bg: linear-gradient(135deg, rgba(25, 36, 56, 0.45) 0%, rgba(13, 19, 31, 0.7) 100%);
+            --liquid-bg-hover: linear-gradient(135deg, rgba(35, 52, 82, 0.6) 0%, rgba(18, 27, 46, 0.85) 100%);
+            
+            /* Bordes de cristal con reflejo de luz */
+            --liquid-border: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.03) 60%, rgba(0, 191, 255, 0.1) 100%);
+            
+            /* Brillos y sombras de profundidad */
+            --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+            --neon-cyan: 0 0 20px rgba(0, 191, 255, 0.4);
+            --neon-verde: 0 0 25px rgba(0, 255, 157, 0.6);
+            
+            --text-main: #f7fafc;
+            --text-sub: #90cdf4;
         }
 
         body {
@@ -59,53 +39,67 @@
         }
 
         #header-sistema {
-            padding: 20px 4% 5px 4%;
+            padding: 25px 4% 5px 4%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            contain: content;
         }
 
         .titulo-marca {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
             text-transform: uppercase;
-            margin: 0;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #ffffff, #90cdf4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
+        /* REPRODUCTOR ENMARCADO EN CRISTAL LÍQUIDO */
         #contenedor-reproductor {
             width: 92%;
             max-width: 1100px;
-            margin: 10px auto 20px auto;
+            margin: 15px auto 25px auto;
             background: #000;
-            border-radius: 16px;
+            border-radius: 24px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: var(--glass-shadow);
-            contain: content;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* EFECTO DE LUZ DE FONDO PARA EL REPRO */
+        #contenedor-reproductor::after {
+            content: '';
+            position: absolute;
+            top: -10%; left: -10%; width: 120%; height: 120%;
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         .seccion-interfaz {
-            padding: 5px 4% 10px 4%;
+            padding: 10px 4% 15px 4%;
             position: relative;
         }
 
         .titulo-fila {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 12px;
+            letter-spacing: 1.2px;
+            margin-bottom: 15px;
+            color: #cbd5e0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .grid-cuadros {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
             width: 100%;
         }
 
-        /* CONTENEDOR CONTROLLABLE PARA EL CARRUSEL */
         .wrapper-carrusel {
             position: relative;
             width: 100%;
@@ -113,145 +107,178 @@
 
         .grid-carrusel-infinito {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             overflow-x: auto;
             scroll-behavior: smooth;
             scroll-snap-type: x mandatory;
-            padding: 10px 0;
+            padding: 15px 0;
             width: 100%;
         }
 
         .grid-carrusel-infinito::-webkit-scrollbar {
-            display: none; /* Ocultamos la barra fea del sistema */
+            display: none;
         }
 
-        /* CONTROLADORES VISUALES DE NAVEGACIÓN DE TELE (BARRAS/FLECHAS) */
-        .controles-tv-carrusel {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-
-        .btn-tv-flecha {
-            background: var(--bg-glass);
-            border: 1px solid var(--liquid-border);
-            color: var(--text-main);
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px 30px;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: var(--glass-shadow);
-            transition: background 0.15s, transform 0.15s;
-        }
-
-        .btn-tv-flecha:hover {
-            background: var(--bg-glass-hover);
-            border-color: var(--verde-neon);
-            transform: scale(1.05);
-        }
-
-        /* TARJETAS */
+        /* TARJETAS CON DISEÑO LIQUID GLASS */
         .card-canal {
-            background: var(--bg-glass);
-            border: 1px solid var(--liquid-border);
-            border-radius: 14px;
-            padding: 20px 15px;
+            background: var(--liquid-bg);
+            border-radius: 20px;
+            padding: 22px 18px;
             text-align: left;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            min-height: 65px;
-            min-width: 180px;
+            min-height: 80px;
+            width: 200px;
             flex-shrink: 0;
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             box-shadow: var(--glass-shadow);
-            contain: layout style;
+            
+            /* Optimización total para TV: previene parpadeos */
             transform: translateZ(0); 
-            transition: transform 0.15s ease-out, border-color 0.15s ease-out;
+            backface-visibility: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.2s, box-shadow 0.2s;
         }
 
+        /* CAPA SUPERIOR DE BRILLO TIPO CRISTAL (REFLEJO ASIMÉTRICO) */
+        .card-canal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+            pointer-events: none;
+            border-top-left-radius: 19px;
+            border-top-right-radius: 19px;
+        }
+
+        /* ENFOQUE / HOVER ESTILO LIQUID GLOW */
         .card-canal:hover {
-            background: var(--bg-glass-hover);
-            transform: scale(1.05) translateZ(0);
-            border-color: rgba(0, 191, 255, 0.5);
+            background: var(--liquid-bg-hover);
+            transform: scale(1.06) translateY(-2px) translateZ(0);
+            border-color: rgba(0, 191, 255, 0.6);
+            box-shadow: var(--glass-shadow), var(--neon-cyan);
         }
 
+        /* ESTADO ACTIVO (CANAL QUE SE ESTÁ REPRODUCIENDO) */
         .card-canal.activo {
-            border-color: var(--verde-neon) !important;
-            background: rgba(20, 38, 32, 0.95) !important;
+            border-color: #00ff9d !important;
+            background: linear-gradient(135deg, rgba(10, 48, 34, 0.75) 0%, rgba(5, 28, 20, 0.9) 100%) !important;
+            box-shadow: var(--glass-shadow), var(--neon-verde);
         }
 
         .canal-meta {
-            font-size: 10px;
-            color: var(--canal-meta-color);
-            font-weight: bold;
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
         }
 
         .canal-titulo-texto {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            line-height: 1.3;
+            line-height: 1.4;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
         }
 
         .tag-live-premium {
             position: absolute;
-            top: 10px;
-            right: 12px;
-            background: #e53e3e;
+            top: 12px;
+            right: 14px;
+            background: linear-gradient(180deg, #ff4b4b 0%, #c52828 100%);
             color: #ffffff;
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 800;
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
         }
 
-        .card-mundial { background: #1a365d; }
-        .card-mundial.tvc { background: #742a2a; }
+        /* Variantes de color de fondo para Señales Exclusivas */
+        .card-mundial { background: linear-gradient(135deg, rgba(26, 54, 93, 0.6) 0%, rgba(15, 32, 57, 0.8) 100%); }
+        .card-mundial.tvc { background: linear-gradient(135deg, rgba(116, 42, 42, 0.6) 0%, rgba(74, 26, 26, 0.8) 100%); }
 
-        /* DOCK INFRA FLUIDO */
+        /* CONTROLES DE DIRECCIÓN (BARRAS DE NAVEGACIÓN TELE) */
+        .controles-tv-carrusel {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-tv-flecha {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 700;
+            padding: 12px 35px;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: var(--glass-shadow);
+            transform: translateZ(0);
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .btn-tv-flecha:hover {
+            border-color: #00ff9d;
+            background: linear-gradient(180deg, rgba(40, 55, 80, 0.9) 0%, rgba(20, 30, 55, 0.95) 100%);
+            transform: scale(1.08) translateZ(0);
+            box-shadow: var(--glass-shadow), var(--neon-verde);
+        }
+
+        /* DOCK DE APPS ESTILO CÁPSULA FLUIDA DE CRISTAL */
         #dock-apps {
             position: fixed;
-            bottom: 20px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%) translateZ(0);
-            background: #0f1521;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 10px 22px;
-            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(20, 28, 43, 0.85) 0%, rgba(10, 15, 24, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 26px;
+            border-radius: 30px;
             display: flex;
             align-items: center;
-            gap: 18px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            gap: 22px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.2);
             z-index: 9999;
+            backdrop-filter: blur(5px); /* Suave desenfoque de fondo */
         }
 
         .app-icono {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transform: translateZ(0);
+            transition: transform 0.15s ease-out;
         }
 
-        .espacio-final { height: 110px; }
+        .app-icono:hover {
+            transform: scale(1.15) translateY(-4px) translateZ(0);
+        }
+
+        .espacio-final { height: 130px; }
     </style>
 </head>
 <body>
 
     <div id="header-sistema">
         <div>
-            <h1 class="titulo-marca">CRISTIAN DIAS TROCHEZ - PREMIUM STREAM</h1>
+            <h1 class="titulo-marca">SISTEMA DE CANALES DE CRISTIAN DIAS TROCHEZ</h1>
         </div>
     </div>
 
@@ -283,8 +310,8 @@
                 </div>
             
             <div class="controles-tv-carrusel">
-                <button class="btn-tv-flecha" onclick="moverCarrusel('izquierda')">◀ Izquierda</button>
-                <button class="btn-tv-flecha" onclick="moverCarrusel('derecha')">Derecha ▶</button>
+                <button class="btn-tv-flecha" onclick="moverCarrusel('izquierda')">◀ IZQUIERDA</button>
+                <button class="btn-tv-flecha" onclick="moverCarrusel('derecha')">DERECHA ▶</button>
             </div>
         </div>
     </div>
@@ -294,12 +321,12 @@
             <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </div>
         <div class="app-icono" style="background: #e50914;" onclick="window.open('https://www.netflix.com', '_blank')">
-            <span style="font-weight:900; font-size:18px;">N</span>
+            <span style="font-weight:900; font-size:20px;">N</span>
         </div>
-        <div class="app-icono" style="background: #00a8e1; font-size:11px; font-weight:bold;" onclick="window.open('https://www.primevideo.com', '_blank')">
+        <div class="app-icono" style="background: #00a8e1; font-size:12px; font-weight:bold;" onclick="window.open('https://www.primevideo.com', '_blank')">
             prime
         </div>
-        <div class="app-icono" style="background: #2d3748; font-size: 18px;">
+        <div class="app-icono" style="background: #313d4f; font-size: 20px;">
             ⚙️
         </div>
     </div>
@@ -320,15 +347,15 @@
             "ltv", "maya tv"
         ];
 
-        // FUNCIÓN NUEVA PARA MOVER EL CARRUSEL CON LAS BOTONERAS DE LA TV
+        // Mover carrusel fluidamente
         function moverCarrusel(direccion) {
             const carrusel = document.getElementById('contenedor-canales-dinamicos');
-            const distanciaDeDesplazamiento = 220; // El ancho aproximado de una tarjeta más el espacio de separación (gap)
+            const tarjetaAncho = 240; // Ancho de tarjeta + gap recalculado para movimiento cómodo
             
             if (direccion === 'izquierda') {
-                carrusel.scrollBy({ left: -distanciaDeDesplazamiento, behavior: 'smooth' });
+                carrusel.scrollBy({ left: -tarjetaAncho, behavior: 'smooth' });
             } else {
-                carrusel.scrollBy({ left: distanciaDeDesplazamiento, behavior: 'smooth' });
+                carrusel.scrollBy({ left: tarjetaAncho, behavior: 'smooth' });
             }
         }
 
@@ -374,7 +401,7 @@
 
                                 const metaTag = document.createElement('div');
                                 metaTag.className = 'canal-meta';
-                                metaTag.innerText = nombreCanal.substring(0, 8);
+                                metaTag.innerText = nombreCanal.substring(0, 12);
                                 card.appendChild(metaTag);
 
                                 const tituloTexto = document.createElement('div');
