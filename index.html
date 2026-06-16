@@ -3,214 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONSOLA DE TRANSMISIÓN DE CRISTIAN DIAS TROCHEZ</title>
+    <title>Sistema de Canales de Cristian Dias Trochez</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
-        /* Interfaz Táctica / Estilo Terminal */
-        body { 
-            background: #05070a; 
-            color: #00ff9d; 
-            font-family: 'Courier New', Courier, monospace; 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            flex-direction: column; 
+        body {
+            background: #111116;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
             height: 100vh;
             overflow: hidden;
         }
-        
-        /* Banner Técnico Principal */
-        #core-header {
-            background-color: #0a0f1d;
-            border-bottom: 2px solid #00ff9d;
-            padding: 15px 20px;
-            text-align: left;
-            box-shadow: 0px 0px 15px rgba(0, 255, 157, 0.2);
+
+        /* BANNER TECNOLÓGICO PREMIUM */
+        #banner-tecnico {
+            background: linear-gradient(135deg, #1e2530 0%, #131722 100%);
+            border: 2px solid #00bfff;
+            border-radius: 8px;
+            margin: 15px 15px 5px 15px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-        .sys-title {
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 2px;
+        /* Efecto de líneas de circuito de fondo */
+        #banner-tecnico::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 80% 50%, rgba(0, 191, 255, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .texto-container {
+            flex: 1;
+        }
+
+        .titulo-principal {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            text-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
+            margin: 0 0 5px 0;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
-        .sys-status {
-            font-size: 14px;
-            color: #00bfff;
-            animation: blink 1.5s infinite;
+        .subtitulo-bienvenida {
+            font-size: 16px;
+            color: #00ff9d;
+            margin: 0;
+            font-weight: 600;
         }
 
-        @keyframes blink {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
+        .tag-sistema {
+            font-family: monospace;
+            font-size: 12px;
+            color: #8a99ad;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #2d3748;
+            display: inline-block;
+            margin-top: 8px;
         }
 
-        #main-workspace {
+        /* Icono de TV estilo tecnológico */
+        .tv-icon-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00bfff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 35px;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CONTENEDOR PRINCIPAL INTERACTIVO */
+        #main-layout {
             display: flex;
             flex: 1;
-            padding: 15px;
+            padding: 10px 15px 15px 15px;
             gap: 15px;
             overflow: hidden;
         }
 
-        /* Panel de Control de Canales (Izquierda) */
-        #matrix-channels { 
-            width: 30%; 
-            max-height: 100%; 
-            overflow-y: auto; 
-            background: #0d1326; 
-            padding: 15px; 
-            border: 1px solid #00bfff;
-            border-radius: 4px;
-        }
-        
-        /* Monitor de Video (Derecha) */
-        #monitor-feed { 
-            width: 70%; 
+        /* Lista de Canales (Izquierda) */
+        #panel-canales {
+            width: 30%;
+            background: #161a24;
+            border-radius: 6px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            background: #020408;
-            border: 1px solid #333;
-            padding: 10px;
-            border-radius: 4px;
+            border: 1px solid #252d3d;
         }
 
-        .panel-label { 
-            color: #00bfff; 
-            margin-top: 0; 
+        .seccion-titulo {
+            color: #ff4757;
             font-size: 14px;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px dashed #333;
-            padding-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .subseccion-titulo {
+            color: #00bfff;
+            font-size: 12px;
             margin-bottom: 15px;
-        }
-        
-        /* Botones de Selección Táctica */
-        .tactical-btn { 
-            display: block; 
-            width: 100%; 
-            background: #111a30; 
-            color: #00ff9d; 
-            border: 1px solid #00bfff; 
-            padding: 12px; 
-            margin-bottom: 8px; 
-            text-align: left; 
-            cursor: pointer; 
-            font-family: inherit;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        
-        .tactical-btn:hover { 
-            background: #00ff9d; 
-            color: #05070a;
-            box-shadow: 0px 0px 10px rgba(0, 255, 157, 0.6);
-            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .tactical-btn.active {
-            background: #00bfff;
-            color: #05070a;
-            border-color: #fff;
-            font-weight: bold;
-            box-shadow: 0px 0px 10px rgba(0, 191, 255, 0.6);
-        }
-        
-        /* Ajuste del Módulo de Video */
-        #reproductor-tv { 
-            width: 100%; 
-            border: 1px solid #00ff9d;
-            background: #000; 
+        #lista-botones {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
         }
 
-        /* Barra de scroll personalizada */
+        /* Botones del menú */
+        .canal-btn {
+            display: block;
+            width: 100%;
+            background: #202634;
+            color: #edf2f7;
+            border: 1px solid #2d3748;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .canal-btn:hover {
+            background: #2b354a;
+            border-color: #00bfff;
+            transform: translateX(2px);
+        }
+
+        .canal-btn.active {
+            background: #ff4757;
+            color: #fff;
+            border-color: #ff6b81;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
+        }
+
+        /* Monitor de Video (Derecha) */
+        #panel-video {
+            width: 70%;
+            background: #000;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 1px solid #252d3d;
+        }
+
+        #reproductor-tv {
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+        }
+
+        /* Scrollbar del panel de canales */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0d1326; }
-        ::-webkit-scrollbar-thumb { background: #00bfff; }
+        ::-webkit-scrollbar-track { background: #161a24; }
+        ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00bfff; }
     </style>
 </head>
 <body>
 
-    <div id="core-header">
-        <div class="sys-title">📡 SISTEMA DE PROGRAMAS DE CANALES DE CRISTIAN DIAS TROCHEZ v2.0</div>
-        <div class="sys-status">● ONLINE_FEED_CONNECTED</div>
+    <div id="banner-tecnico">
+        <div class="texto-container">
+            <div class="titulo-principal">Sistema de Canales de Cristian Dias Trochez</div>
+            <div class="subtitulo-bienvenida">¡Hola, Bienvenido!</div>
+            <div class="tag-sistema">[ DATA_STREAMS / HONDURAS ]</div>
+        </div>
+        <div class="tv-icon-container">
+            📺
+        </div>
     </div>
 
-    <div id="main-workspace">
-        <div id="matrix-channels">
-            <div class="panel-label">[ DATA_STREAMS / HONDURAS ]</div>
-            <div id="contenedor-botones-canales">
-                <p style="color: #aaa;">Iniciando protocolos de enlace...</p>
+    <div id="main-layout">
+        <div id="panel-canales">
+            <div class="seccion-titulo">Canales en Vivo (Automáticos)</div>
+            <div class="subseccion-titulo">🌐 Canales Comunitarios (Automáticos)</div>
+            <div id="lista-botones">
+                <p style="color: #718096; font-size: 13px;">Sincronizando frecuencias...</p>
             </div>
         </div>
 
-        <div id="monitor-feed">
-            <video id="reproductor-tv" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" controls preload="auto"></video>
+        <div id="panel-video">
+            <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"></video>
         </div>
     </div>
 
     <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
     <script>
-        var player = videojs('reproductor-tv');
+        var player = videojs('reproductor-tv', {
+            fluid: true,
+            playbackRates: [0.5, 1, 1.5, 2]
+        });
         
-        // Base de datos de canales automática (IPTV-ORG)
-        const URL_LISTA_COMUNITARIA = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
-        const URL_TU_CONTROL_REMOTO = 'AQUÍ_PONE_EL_LINK_DE_TU_ARCHIVO_M3U_EN_GITHUB'; 
+        // Enlace automático de la base de datos IPTV de Honduras
+        const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
-        async function cargarTodasLasListas() {
+        async function cargarCanales() {
             try {
-                const contenedor = document.getElementById('contenedor-botones-canales');
+                const contenedor = document.getElementById('lista-botones');
+                const respuesta = await fetch(URL_M3U);
+                const texto = await respuesta.text();
+                const lineas = texto.split('\n');
+                
                 contenedor.innerHTML = '';
+                let nombreCanal = '';
 
-                // Carga Automática de Streams
-                await parsearM3U(URL_LISTA_COMUNITARIA, contenedor);
+                lineas.forEach(linea => {
+                    if (linea.startsWith('#EXTINF:')) {
+                        nombreCanal = linea.split(',')[1] || 'Canal de Transmisión';
+                        nombreCanal = nombreCanal.trim();
+                    } else if (linea.startsWith('http')) {
+                        let urlCanal = linea.trim();
+                        if (nombreCanal) {
+                            let boton = document.createElement('button');
+                            boton.className = 'canal-btn';
+                            boton.innerText = nombreCanal;
+                            
+                            boton.onclick = function() {
+                                player.src({ type: 'application/x-mpegURL', src: urlCanal });
+                                player.play();
+                                
+                                const botones = contenedor.querySelectorAll('.canal-btn');
+                                botones.forEach(b => b.classList.remove('active'));
+                                this.classList.add('active');
+                            };
+                            
+                            contenedor.appendChild(boton);
+                            nombreCanal = '';
+                        }
+                    }
+                });
 
             } catch (error) {
-                console.error("SYS_ERROR:", error);
-                document.getElementById('contenedor-botones-canales').innerHTML = '<p style="color:#ff4757;">[CRITICAL_ERROR: FAIL_TO_LOAD_STREAMS]</p>';
+                console.error("Error cargando streams:", error);
+                document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
             }
         }
 
-        async function parsearM3U(url, contenedor) {
-            const respuesta = await fetch(url);
-            const texto = await respuesta.text();
-            const lineas = texto.split('\n');
-            let nombreCanal = '';
-
-            lineas.forEach(linea => {
-                if (linea.startsWith('#EXTINF:')) {
-                    nombreCanal = linea.split(',')[1] || 'UNKNOWN_FEED';
-                    nombreCanal = nombreCanal.trim();
-                } else if (linea.startsWith('http')) {
-                    let urlCanal = linea.trim();
-                    if (nombreCanal) {
-                        let boton = document.createElement('button');
-                        boton.className = 'tactical-btn';
-                        boton.innerText = `> LINK: ${nombreCanal}`;
-                        boton.onclick = function() {
-                            player.src({ type: 'application/x-mpegURL', src: urlCanal });
-                            player.play();
-                            
-                            const botones = contenedor.querySelectorAll('.tactical-btn');
-                            botones.forEach(b => b.classList.remove('active'));
-                            this.classList.add('active');
-                        };
-                        contenedor.appendChild(boton);
-                        nombreCanal = '';
-                    }
-                }
-            });
-        }
-
-        cargarTodasLasListas();
+        cargarCanales();
     </script>
 </body>
 </html>
