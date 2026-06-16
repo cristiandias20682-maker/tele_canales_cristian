@@ -14,6 +14,7 @@
             --cyan-glow: rgba(0, 191, 255, 0.4);
             --text-main: #edf2f7;
             --text-sub: #a0aec0;
+            --verde-neon: #00ff9d;
         }
 
         body {
@@ -24,12 +25,89 @@
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
-            /* Renderizado de texto más rápido */
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ENCABEZADO */
+        /* PANTALLA INTERACTIVA DE BIENVENIDA (SPLASH SCREEN) */
+        #pantalla-bienvenida {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #161f30 0%, #07090d 100%);
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+        }
+
+        /* Ocultado suave mediante JS */
+        #pantalla-bienvenida.oculto {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .contenedor-intro {
+            text-align: center;
+            animation: fadeInIntro 1s ease-out;
+            padding: 20px;
+        }
+
+        .titulo-welcome {
+            font-size: 42px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        .subtitulo-welcome {
+            font-size: 18px;
+            color: var(--verde-neon);
+            margin: 0 0 40px 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* BOTÓN EMPEZAR PREMIUM LIQUID GLASS */
+        .btn-empezar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 157, 0.4);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 16px 45px;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 8px 32px 0 rgba(0, 255, 157, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            outline: none;
+        }
+
+        .btn-empezar:hover {
+            transform: scale(1.08) translateZ(0);
+            background: rgba(0, 255, 157, 0.1);
+            border-color: var(--verde-neon);
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
+        }
+
+        @keyframes fadeInIntro {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* INTERFAZ DEL SISTEMA (IGUAL QUE ANTES) */
         #header-sistema {
             padding: 25px 4% 10px 4%;
             display: flex;
@@ -47,7 +125,7 @@
 
         .sub-tag {
             font-size: 13px;
-            color: #00ff9d;
+            color: var(--verde-neon);
             margin-top: 4px;
             font-weight: 500;
         }
@@ -58,7 +136,6 @@
             color: var(--text-sub);
         }
 
-        /* REPRODUCTOR */
         #contenedor-reproductor {
             width: 92%;
             max-width: 1100px;
@@ -74,7 +151,6 @@
             display: block;
         }
 
-        /* SECCIONES */
         .seccion-interfaz {
             padding: 5px 4% 20px 4%;
         }
@@ -89,7 +165,6 @@
         .titulo-fila.mundial { color: #48bb78; }
         .titulo-fila.canales { color: #3182ce; }
 
-        /* REJILLA ESTABLE FORZADA */
         .grid-cuadros {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
@@ -97,7 +172,6 @@
             width: 100%;
         }
 
-        /* COMPONENTE INTERFAZ CON ALINEACIÓN GRÁFICA */
         .card-canal {
             background: var(--bg-glass);
             backdrop-filter: blur(12px);
@@ -114,14 +188,9 @@
             flex-direction: column;
             justify-content: flex-end;
             box-shadow: var(--glass-shadow);
-            
-            /* Optimización de hardware para evitar parpadeos en TV */
             transform: translateZ(0);
             will-change: transform, border-color, box-shadow;
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
-                        background 0.2s ease, 
-                        border-color 0.2s ease, 
-                        box-shadow 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .card-canal:hover {
@@ -131,9 +200,8 @@
             box-shadow: 0 8px 25px var(--cyan-glow);
         }
 
-        /* CANAL ACTIVO */
         .card-canal.activo {
-            border-color: #00ff9d !important;
+            border-color: var(--verde-neon) !important;
             box-shadow: 0 0 20px rgba(0, 255, 157, 0.3) !important;
             background: rgba(25, 45, 38, 0.8) !important;
         }
@@ -153,7 +221,6 @@
             line-height: 1.3;
         }
 
-        /* ETIQUETA LIVE DIAMANTE */
         .tag-live-premium {
             position: absolute;
             top: 10px;
@@ -170,7 +237,6 @@
             box-shadow: 0 2px 6px rgba(229, 62, 62, 0.4);
         }
 
-        /* BOTONES MUNDIAL */
         .card-mundial {
             background: linear-gradient(135deg, rgba(43, 108, 176, 0.6) 0%, rgba(26, 54, 93, 0.7) 100%);
         }
@@ -218,6 +284,14 @@
     </style>
 </head>
 <body>
+
+    <div id="pantalla-bienvenida">
+        <div class="contenedor-intro">
+            <h1 class="titulo-welcome">¡Bienvenidos!</h1>
+            <p class="subtitulo-welcome">Presiona el botón empezar</p>
+            <button class="btn-empezar" onclick="entrarAlSistema()">Empezar</button>
+        </div>
+    </div>
 
     <div id="header-sistema">
         <div>
@@ -287,6 +361,12 @@
             "ltv", "maya tv"
         ];
 
+        // Función interactiva para quitar la pantalla de bienvenida
+        function entrarAlSistema() {
+            const intro = document.getElementById('pantalla-bienvenida');
+            intro.classList.add('oculto');
+        }
+
         async function cargarCanales() {
             try {
                 const contenedor = document.getElementById('contenedor-canales-dinamicos');
@@ -294,7 +374,6 @@
                 const texto = await respuesta.text();
                 const lineas = texto.split('\n');
                 
-                // Fragmento de memoria para optimizar la inyección DOM de golpe
                 const fragmento = document.createDocumentFragment();
                 let nombreCanal = '';
 
@@ -356,11 +435,10 @@
                 contenedor.appendChild(fragmento);
 
             } catch (error) {
-                console.error("Error al renderizar la rejilla optimizada:", error);
+                console.error("Error:", error);
             }
         }
 
-        // Carga inmediata asíncrona
         document.addEventListener('DOMContentLoaded', cargarCanales);
     </script>
 </body>
