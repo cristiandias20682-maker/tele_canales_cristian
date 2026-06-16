@@ -3,117 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programa de Canales de Cristian Dias Trochez XD</title>
+    <title>CONSOLA DE TRANSMISIÓN DE CRISTIAN DIAS TROCHEZ</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
+        /* Interfaz Táctica / Estilo Terminal */
         body { 
-            background: #0b0b0b; 
-            color: #fff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #05070a; 
+            color: #00ff9d; 
+            font-family: 'Courier New', Courier, monospace; 
             margin: 0; 
             padding: 0; 
             display: flex; 
             flex-direction: column; 
             height: 100vh;
+            overflow: hidden;
         }
         
-        /* Banner de Bienvenida Personalizado XD */
-        #banner-bienvenida {
-            background-color: #1a1a1a;
-            color: white;
-            padding: 20px 10px;
-            text-align: center;
-            border-bottom: 2px solid #ff4757;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0px 4px 6px rgba(0,0,0,0.3);
+        /* Banner Técnico Principal */
+        #core-header {
+            background-color: #0a0f1d;
+            border-bottom: 2px solid #00ff9d;
+            padding: 15px 20px;
+            text-align: left;
+            box-shadow: 0px 0px 15px rgba(0, 255, 157, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        #contenido-principal {
+        .sys-title {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
+        }
+
+        .sys-status {
+            font-size: 14px;
+            color: #00bfff;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        #main-workspace {
             display: flex;
             flex: 1;
             padding: 15px;
+            gap: 15px;
             overflow: hidden;
         }
 
-        /* Lista de canales a la izquierda */
-        #lista-canales { 
+        /* Panel de Control de Canales (Izquierda) */
+        #matrix-channels { 
             width: 30%; 
             max-height: 100%; 
             overflow-y: auto; 
-            background: #141414; 
+            background: #0d1326; 
             padding: 15px; 
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0,0,0,0.5);
+            border: 1px solid #00bfff;
+            border-radius: 4px;
         }
         
-        #reproductor-contenedor { 
+        /* Monitor de Video (Derecha) */
+        #monitor-feed { 
             width: 70%; 
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 0 15px;
+            background: #020408;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 4px;
         }
 
-        h2 { 
-            text-align: center; 
-            color: #ff4757; 
+        .panel-label { 
+            color: #00bfff; 
             margin-top: 0; 
-            font-size: 18px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
         }
         
-        .canal-btn { 
+        /* Botones de Selección Táctica */
+        .tactical-btn { 
             display: block; 
             width: 100%; 
-            background: #222; 
-            color: #fff; 
-            border: 1px solid #333; 
-            padding: 15px; 
-            margin-bottom: 10px; 
+            background: #111a30; 
+            color: #00ff9d; 
+            border: 1px solid #00bfff; 
+            padding: 12px; 
+            margin-bottom: 8px; 
             text-align: left; 
             cursor: pointer; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            transition: background 0.2s, transform 0.1s;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s;
         }
         
-        .canal-btn:hover { 
-            background: #ff4757; 
-            transform: scale(1.03);
-            border-color: #ff6b81;
+        .tactical-btn:hover { 
+            background: #00ff9d; 
+            color: #05070a;
+            box-shadow: 0px 0px 10px rgba(0, 255, 157, 0.6);
+            font-weight: bold;
         }
 
-        .canal-btn.activo {
-            background-color: #ff4757;
-            font-weight: bold;
+        .tactical-btn.active {
+            background: #00bfff;
+            color: #05070a;
             border-color: #fff;
+            font-weight: bold;
+            box-shadow: 0px 0px 10px rgba(0, 191, 255, 0.6);
         }
         
-        /* Reproductor de video ajustado */
+        /* Ajuste del Módulo de Video */
         #reproductor-tv { 
             width: 100%; 
-            border-radius: 10px; 
+            border: 1px solid #00ff9d;
             background: #000; 
-            box-shadow: 0px 0px 20px rgba(0,0,0,0.7);
         }
+
+        /* Barra de scroll personalizada */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0d1326; }
+        ::-webkit-scrollbar-thumb { background: #00bfff; }
     </style>
 </head>
 <body>
 
-    <div id="banner-bienvenida">
-        📺 ¡Hola, Bienvenido! ⚽<br>
-        al Programa de Canales de Cristian Dias Trochez XD
+    <div id="core-header">
+        <div class="sys-title">📡 SISTEMA DE PROGRAMAS DE CANALES DE CRISTIAN DIAS TROCHEZ v2.0</div>
+        <div class="sys-status">● ONLINE_FEED_CONNECTED</div>
     </div>
 
-    <div id="contenido-principal">
-        <div id="lista-canales">
-            <h2>Canales en Vivo (Automáticos)</h2>
+    <div id="main-workspace">
+        <div id="matrix-channels">
+            <div class="panel-label">[ DATA_STREAMS / HONDURAS ]</div>
             <div id="contenedor-botones-canales">
-                <p style="text-align:center;">Cargando la lista de canales...</p>
+                <p style="color: #aaa;">Iniciando protocolos de enlace...</p>
             </div>
         </div>
 
-        <div id="reproductor-contenedor">
+        <div id="monitor-feed">
             <video id="reproductor-tv" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" controls preload="auto"></video>
         </div>
     </div>
@@ -122,44 +161,21 @@
     <script>
         var player = videojs('reproductor-tv');
         
-        // 🔥 ESTE ES EL TRUCO FINAL: Link de la lista comunitaria + tu control remoto 🔥
-        // El script unirá ambas listas automáticamente.
+        // Base de datos de canales automática (IPTV-ORG)
         const URL_LISTA_COMUNITARIA = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
-        
-        // ⚠️ IMPORTANTE: Aquí pondrás el link de TU lista personal en GitHub cuando la crees
         const URL_TU_CONTROL_REMOTO = 'AQUÍ_PONE_EL_LINK_DE_TU_ARCHIVO_M3U_EN_GITHUB'; 
 
         async function cargarTodasLasListas() {
             try {
                 const contenedor = document.getElementById('contenedor-botones-canales');
-                contenedor.innerHTML = ''; // Limpiamos el cargando
+                contenedor.innerHTML = '';
 
-                // 1. Cargar canales de TU control remoto personal (Secreto #2)
-                if (URL_TU_CONTROL_REMOTO.startsWith('http')) {
-                    const h3Personal = document.createElement('h3');
-                    h3Personal.innerText = "⭐ Tus Canales Propios (Manuales)";
-                    h3Personal.style.color = "#ff6b81";
-                    h3Personal.style.fontSize = "16px";
-                    contenedor.appendChild(h3Personal);
-                    await parsearM3U(URL_TU_CONTROL_REMOTO, contenedor);
-                    
-                    const hr = document.createElement('hr');
-                    hr.style.borderColor = "#333";
-                    hr.style.margin = "15px 0";
-                    contenedor.appendChild(hr);
-                }
-
-                // 2. Cargar canales de la lista comunitaria automática (Secreto #1)
-                const h3Comunitaria = document.createElement('h3');
-                h3Comunitaria.innerText = "🌐 Canales Comunitarios (Automáticos)";
-                h3Comunitaria.style.color = "#479fff";
-                h3Comunitaria.style.fontSize = "16px";
-                contenedor.appendChild(h3Comunitaria);
+                // Carga Automática de Streams
                 await parsearM3U(URL_LISTA_COMUNITARIA, contenedor);
 
             } catch (error) {
-                console.error("Error al cargar las listas:", error);
-                document.getElementById('contenedor-botones-canales').innerHTML = '<p style="text-align:center; color:#ff4757;">Error al cargar canales. Revisa los links.</p>';
+                console.error("SYS_ERROR:", error);
+                document.getElementById('contenedor-botones-canales').innerHTML = '<p style="color:#ff4757;">[CRITICAL_ERROR: FAIL_TO_LOAD_STREAMS]</p>';
             }
         }
 
@@ -171,28 +187,24 @@
 
             lineas.forEach(linea => {
                 if (linea.startsWith('#EXTINF:')) {
-                    // Extraer nombre del canal, limpiando el texto
-                    nombreCanal = linea.split(',')[1] || 'Canal sin nombre';
+                    nombreCanal = linea.split(',')[1] || 'UNKNOWN_FEED';
                     nombreCanal = nombreCanal.trim();
                 } else if (linea.startsWith('http')) {
                     let urlCanal = linea.trim();
-                    // Crear el botón en automático
                     if (nombreCanal) {
                         let boton = document.createElement('button');
-                        boton.className = 'canal-btn';
-                        boton.innerText = nombreCanal;
+                        boton.className = 'tactical-btn';
+                        boton.innerText = `> LINK: ${nombreCanal}`;
                         boton.onclick = function() {
-                            // Cambiar canal y play
                             player.src({ type: 'application/x-mpegURL', src: urlCanal });
                             player.play();
                             
-                            // Resaltar botón activo
-                            const botones = contenedor.querySelectorAll('.canal-btn');
-                            botones.forEach(b => b.classList.remove('activo'));
-                            this.classList.add('activo');
+                            const botones = contenedor.querySelectorAll('.tactical-btn');
+                            botones.forEach(b => b.classList.remove('active'));
+                            this.classList.add('active');
                         };
                         contenedor.appendChild(boton);
-                        nombreCanal = ''; // Limpiar para el siguiente
+                        nombreCanal = '';
                     }
                 }
             });
