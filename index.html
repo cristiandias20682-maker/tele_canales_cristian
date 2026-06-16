@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cristian Dias Trochez - Premium Stream</title>
+    <title>Cristian Dias Trochez - Premium Stream TV</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
-        /* CONFIGURACIÓN DE LOS TEMAS OPTIMIZADOS (AHORA CON MEJORAS VISUALES) */
+        /* CONFIGURACIÓN DE TEMAS VISUALES */
         :root {
             --bg-gradiente: radial-gradient(circle at 50% 30%, #161c26 0%, #0d1117 70%, #07090d 100%);
             --bg-glass: rgba(23, 29, 41, 0.85);
@@ -18,7 +18,6 @@
             --cyan-glow: rgba(0, 191, 255, 0.3);
             --verde-neon: #00ff9d;
             --canal-meta-color: #63b3ed;
-            --header-preview-height: 250px; /* Altura del banner preview */
         }
 
         [data-theme="claro"] {
@@ -59,139 +58,8 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* PANTALLA DE BIENVENIDA */
-        #pantalla-bienvenida {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0d1117;
-            z-index: 100000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            will-change: opacity;
-            transition: opacity 0.4s ease, visibility 0.4s;
-        }
-
-        #pantalla-bienvenida.oculto {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .contenedor-intro {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .titulo-welcome {
-            font-size: 42px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #ffffff;
-            margin: 0 0 10px 0;
-        }
-
-        .subtitulo-welcome {
-            font-size: 18px;
-            color: #00ff9d;
-            margin: 0 0 40px 0;
-            font-weight: 500;
-        }
-
-        .btn-empezar {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid #00ff9d;
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 700;
-            padding: 16px 45px;
-            border-radius: 30px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transform: translateZ(0);
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .btn-empezar:hover {
-            transform: scale(1.05) translateZ(0);
-            background: rgba(0, 255, 157, 0.15);
-        }
-
-        /* HEADER DE VISTA PREVIA EN VIVO (LIVE PREVIEW) */
-        #live-preview-header {
-            width: 100%;
-            height: var(--header-preview-height);
-            background-color: rgba(0, 0, 0, 0.6);
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 2px solid var(--liquid-border);
-            contain: content;
-        }
-        
-        #live-preview-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 40px 4%;
-            box-sizing: border-box;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-        }
-        
-        #preview-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        #preview-logo {
-            width: 80px;
-            height: 80px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        
-        #preview-text {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        #preview-channel-name {
-            font-size: 24px;
-            font-weight: 700;
-            color: #fff;
-        }
-        
-        #preview-now-playing {
-            font-size: 14px;
-            color: var(--verde-neon);
-        }
-        
-        #preview-live-indicator {
-            background: #e53e3e;
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        /* HEADER SISTEMA */
         #header-sistema {
-            padding: 15px 4% 10px 4%;
+            padding: 20px 4% 5px 4%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -205,12 +73,6 @@
             margin: 0;
         }
 
-        .info-locacion {
-            text-align: right;
-            font-size: 12px;
-            color: var(--text-sub);
-        }
-
         #contenedor-reproductor {
             width: 92%;
             max-width: 1100px;
@@ -220,16 +82,12 @@
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
             box-shadow: var(--glass-shadow);
-            display: none;
             contain: content;
-        }
-        #contenedor-reproductor.activo {
-            display: block;
         }
 
         .seccion-interfaz {
             padding: 5px 4% 10px 4%;
-            contain: content;
+            position: relative;
         }
 
         .titulo-fila {
@@ -237,30 +95,65 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-        
-        /* REJILLA DE CANALES EN CARRUSEL INFINITO HORIZONTAL */
+
+        .grid-cuadros {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* CONTENEDOR CONTROLLABLE PARA EL CARRUSEL */
+        .wrapper-carrusel {
+            position: relative;
+            width: 100%;
+        }
+
         .grid-carrusel-infinito {
             display: flex;
             gap: 15px;
             overflow-x: auto;
+            scroll-behavior: smooth;
             scroll-snap-type: x mandatory;
             padding: 10px 0;
             width: 100%;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .grid-carrusel-infinito::-webkit-scrollbar {
-            height: 5px;
-        }
-        
-        .grid-carrusel-infinito::-webkit-scrollbar-thumb {
-            background: var(--liquid-border);
-            border-radius: 10px;
         }
 
-        /* TARJETAS DE CANALES (OPTIMIZADAS Y CON EFECTOS) */
+        .grid-carrusel-infinito::-webkit-scrollbar {
+            display: none; /* Ocultamos la barra fea del sistema */
+        }
+
+        /* CONTROLADORES VISUALES DE NAVEGACIÓN DE TELE (BARRAS/FLECHAS) */
+        .controles-tv-carrusel {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn-tv-flecha {
+            background: var(--bg-glass);
+            border: 1px solid var(--liquid-border);
+            color: var(--text-main);
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: var(--glass-shadow);
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .btn-tv-flecha:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--verde-neon);
+            transform: scale(1.05);
+        }
+
+        /* TARJETAS */
         .card-canal {
             background: var(--bg-glass);
             border: 1px solid var(--liquid-border);
@@ -278,12 +171,8 @@
             flex-direction: column;
             justify-content: flex-end;
             box-shadow: var(--glass-shadow);
-            
             contain: layout style;
             transform: translateZ(0); 
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            will-change: transform, border-color;
             transition: transform 0.15s ease-out, border-color 0.15s ease-out;
         }
 
@@ -296,7 +185,6 @@
         .card-canal.activo {
             border-color: var(--verde-neon) !important;
             background: rgba(20, 38, 32, 0.95) !important;
-            transform: scale(0.98) translateZ(0);
         }
 
         .canal-meta {
@@ -325,7 +213,10 @@
             border-radius: 4px;
         }
 
-        /* DOCK INFERIOR */
+        .card-mundial { background: #1a365d; }
+        .card-mundial.tvc { background: #742a2a; }
+
+        /* DOCK INFRA FLUIDO */
         #dock-apps {
             position: fixed;
             bottom: 20px;
@@ -340,8 +231,6 @@
             gap: 18px;
             box-shadow: 0 12px 30px rgba(0,0,0,0.5);
             z-index: 9999;
-            contain: content;
-            backface-visibility: hidden;
         }
 
         .app-icono {
@@ -352,130 +241,33 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transform: translateZ(0);
-            transition: transform 0.15s ease-out;
             color: white;
-        }
-        .app-icono:hover { 
-            transform: scale(1.1) translateZ(0); 
         }
 
         .espacio-final { height: 110px; }
-        
-        /* SELECTOR DE TEMAS - PANEL LATERAL */
-        #panel-temas {
-            position: fixed;
-            top: 0;
-            right: -300px; /* Oculto inicialmente */
-            width: 250px;
-            height: 100%;
-            background: var(--bg-glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-left: 1px solid var(--liquid-border);
-            padding: 40px 20px;
-            box-sizing: border-box;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            transition: right 0.3s ease-in-out;
-            box-shadow: -5px 0 20px rgba(0,0,0,0.4);
-        }
-        
-        #panel-temas.activo {
-            right: 0;
-        }
-        
-        .titulo-panel-temas {
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .opcion-tema {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--liquid-border);
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.2s;
-        }
-        
-        .opcion-tema:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .opcion-tema.activo {
-            border-color: var(--verde-neon);
-            background: rgba(0, 255, 157, 0.05);
-        }
-        
-        .icon-tema {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-        }
-        
-        .text-tema {
-            font-size: 14px;
-            color: #fff;
-        }
-
     </style>
 </head>
 <body>
-
-    <div id="pantalla-bienvenida">
-        <div class="contenedor-intro">
-            <h1 class="titulo-welcome">¡Bienvenidos!</h1>
-            <p class="subtitulo-welcome">Presiona el botón empezar</p>
-            <button class="btn-empezar" onclick="entrarAlSistema()">Empezar</button>
-        </div>
-    </div>
-    
-    <div id="live-preview-header">
-        <div id="live-preview-content">
-            <div id="preview-info">
-                <div id="preview-logo"></div>
-                <div id="preview-text">
-                    <span id="preview-channel-name">Selecciona un canal</span>
-                    <span id="preview-now-playing">Vista previa en tiempo real</span>
-                </div>
-            </div>
-            <div id="preview-live-indicator">EN VIVO</div>
-        </div>
-    </div>
 
     <div id="header-sistema">
         <div>
             <h1 class="titulo-marca">CRISTIAN DIAS TROCHEZ - PREMIUM STREAM</h1>
         </div>
-        <div class="info-locacion">
-            Locación: Contenido<br>
-            <span style="color:var(--text-sub)">[ HONDURAS ]</span>
-        </div>
     </div>
 
     <div id="contenedor-reproductor">
-        <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none" width="100%"></video>
+        <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%"></video>
     </div>
 
     <div class="seccion-interfaz">
         <div class="titulo-fila mundiales">🏆 SEÑALES EXCLUSIVAS (MUNDIAL)</div>
         <div class="grid-cuadros">
-            <div class="card-canal card-mundial" onclick="playWebChannel('Canal 5 (Oficial)', 'https://www.televicentro.com', 'url_logo_c5.png')">
+            <div class="card-canal card-mundial" onclick="window.open('https://www.televicentro.com', '_blank')">
                 <span class="tag-live-premium">WEB</span>
                 <div class="canal-meta">Televicentro</div>
                 <div class="canal-titulo-texto">Ver CANAL 5 (Oficial)</div>
             </div>
-            <div class="card-canal card-mundial tvc" onclick="playWebChannel('Deportes TVC', 'https://www.deportestvc.com', 'url_logo_tvc.png')">
+            <div class="card-canal card-mundial tvc" onclick="window.open('https://www.deportestvc.com', '_blank')">
                 <span class="tag-live-premium">WEB</span>
                 <div class="canal-meta">Deportes TVC</div>
                 <div class="canal-titulo-texto">Ver DEPORTES TVC</div>
@@ -485,8 +277,16 @@
 
     <div class="seccion-interfaz">
         <div class="titulo-fila canales">🌐 CANALES NACIONALES (AUTOMÁTICOS)</div>
-        <div class="grid-carrusel-infinito" id="contenedor-canales-dinamicos">
+        
+        <div class="wrapper-carrusel">
+            <div class="grid-carrusel-infinito" id="contenedor-canales-dinamicos">
+                </div>
+            
+            <div class="controles-tv-carrusel">
+                <button class="btn-tv-flecha" onclick="moverCarrusel('izquierda')">◀ Izquierda</button>
+                <button class="btn-tv-flecha" onclick="moverCarrusel('derecha')">Derecha ▶</button>
             </div>
+        </div>
     </div>
 
     <div id="dock-apps">
@@ -499,27 +299,8 @@
         <div class="app-icono" style="background: #00a8e1; font-size:11px; font-weight:bold;" onclick="window.open('https://www.primevideo.com', '_blank')">
             prime
         </div>
-        <div class="app-icono" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); font-size: 18px;" onclick="togglePanelTemas()" title="Cambiar Tema">
-            🎨
-        </div>
         <div class="app-icono" style="background: #2d3748; font-size: 18px;">
             ⚙️
-        </div>
-    </div>
-    
-    <div id="panel-temas">
-        <h3 class="titulo-panel-temas">Elige tu estilo</h3>
-        <div class="opcion-tema oscuro" id="tema-oscuro" onclick="establecerTema('oscuro')">
-            <div class="icon-tema" style="background: #07090d;"></div>
-            <span class="text-tema">Oscuro Líquido</span>
-        </div>
-        <div class="opcion-tema claro" id="tema-claro" onclick="establecerTema('claro')">
-            <div class="icon-tema" style="background: #e2e8f0;"></div>
-            <span class="text-tema">Claro Cristal</span>
-        </div>
-        <div class="opcion-tema azul" id="tema-azul" onclick="establecerTema('azul')">
-            <div class="icon-tema" style="background: #00102a;"></div>
-            <span class="text-tema">Azul Espacial</span>
         </div>
     </div>
 
@@ -539,47 +320,18 @@
             "ltv", "maya tv"
         ];
 
-        // LÓGICA DE TEMAS SUPER-VISUALES
-        let temaActual = localStorage.getItem("tema-tv") || "oscuro";
-        establecerTema(temaActual, false); // Carga inicial sin guardar de nuevo
-
-        function togglePanelTemas() {
-            document.getElementById('panel-temas').classList.toggle('activo');
-        }
-
-        function establecerTema(tema, guardar = true) {
-            temaActual = tema;
-            document.documentElement.setAttribute("data-theme", temaActual);
+        // FUNCIÓN NUEVA PARA MOVER EL CARRUSEL CON LAS BOTONERAS DE LA TV
+        function moverCarrusel(direccion) {
+            const carrusel = document.getElementById('contenedor-canales-dinamicos');
+            const distanciaDeDesplazamiento = 220; // El ancho aproximado de una tarjeta más el espacio de separación (gap)
             
-            // Actualizar el estado activo en el panel lateral
-            const opciones = document.querySelectorAll('.opcion-tema');
-            opciones.forEach(op => op.classList.remove('activo'));
-            document.getElementById('tema-' + tema).classList.add('activo');
-            
-            if (guardar) {
-                localStorage.setItem("tema-tv", temaActual);
-                // togglePanelTemas(); // Ocultar panel al elegir
+            if (direccion === 'izquierda') {
+                carrusel.scrollBy({ left: -distanciaDeDesplazamiento, behavior: 'smooth' });
+            } else {
+                carrusel.scrollBy({ left: distanciaDeDesplazamiento, behavior: 'smooth' });
             }
         }
 
-        function entrarAlSistema() {
-            document.getElementById('pantalla-bienvenida').classList.add('oculto');
-        }
-
-        // LÓGICA DE LIVE PREVIEW DINÁMICA
-        function updateLivePreview(canal, logo) {
-            document.getElementById('preview-channel-name').innerText = canal;
-            // document.getElementById('preview-logo').style.backgroundImage = `url('${logo}')`;
-            // En un futuro, podrías integrar una API que devuelva la guía de TV
-            document.getElementById('preview-now-playing').innerText = "Transmisión en vivo y directo"; 
-        }
-
-        function playWebChannel(canal, url, logo) {
-            updateLivePreview(canal, logo);
-            window.open(url, '_blank');
-        }
-
-        // FUNCIÓN DE ALTO RENDIMIENTO (60 FPS LOOP)
         async function cargarCanales() {
             try {
                 const contenedor = document.getElementById('contenedor-canales-dinamicos');
@@ -590,12 +342,11 @@
                 const fragmento = document.createDocumentFragment();
                 let nombreCanal = '';
 
-                // Bucle indexado clásico: el método más rápido en Smart TVs antiguas
                 for (let i = 0, len = lineas.length; i < len; i++) {
                     const linea = lineas[i].trim();
                     if (!linea) continue;
 
-                    if (linea.charCodeAt(0) === 35) { // Evita evaluar texto pesado, 35 es el caracter '#'
+                    if (linea.charCodeAt(0) === 35) {
                         if (linea.startsWith('#EXTINF:')) {
                             const partes = linea.split(',');
                             nombreCanal = (partes[1] || 'Canal').trim();
@@ -623,7 +374,7 @@
 
                                 const metaTag = document.createElement('div');
                                 metaTag.className = 'canal-meta';
-                                metaTag.innerText = nombreCanal.substring(0, 8); // Corte de string directo ultra veloz
+                                metaTag.innerText = nombreCanal.substring(0, 8);
                                 card.appendChild(metaTag);
 
                                 const tituloTexto = document.createElement('div');
@@ -632,16 +383,8 @@
                                 card.appendChild(tituloTexto);
                                 
                                 const urlActual = linea;
-                                const currentNombre = nombreCanal;
                                 
-                                // EVENTO DE ENFOQUE (Simulación de hover para TV)
-                                card.addEventListener('mouseenter', function() {
-                                    updateLivePreview(currentNombre, ''); // Actualiza el banner sin reproducir
-                                });
-
                                 card.onclick = function() {
-                                    updateLivePreview(currentNombre, '');
-                                    document.getElementById('contenedor-reproductor').classList.add('activo');
                                     player.src({ type: 'application/x-mpegURL', src: urlActual });
                                     player.play();
                                     
@@ -667,7 +410,6 @@
             }
         }
 
-        // Carga optimizada sin bloquear la renderización inicial
         window.addEventListener('load', cargarCanales, { passive: true });
     </script>
 </body>
