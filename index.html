@@ -24,6 +24,9 @@
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            /* Renderizado de texto más rápido */
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* ENCABEZADO */
@@ -86,7 +89,7 @@
         .titulo-fila.mundial { color: #48bb78; }
         .titulo-fila.canales { color: #3182ce; }
 
-        /* REJILLA HORIZONTAL FORZADA A CUADRITOS */
+        /* REJILLA ESTABLE FORZADA */
         .grid-cuadros {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
@@ -94,7 +97,7 @@
             width: 100%;
         }
 
-        /* EFECTO LIQUID GLASS EN LAS TARJETAS */
+        /* COMPONENTE INTERFAZ CON ALINEACIÓN GRÁFICA */
         .card-canal {
             background: var(--bg-glass);
             backdrop-filter: blur(12px);
@@ -106,26 +109,33 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 65px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             box-shadow: var(--glass-shadow);
+            
+            /* Optimización de hardware para evitar parpadeos en TV */
+            transform: translateZ(0);
+            will-change: transform, border-color, box-shadow;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                        background 0.2s ease, 
+                        border-color 0.2s ease, 
+                        box-shadow 0.2s ease;
         }
 
         .card-canal:hover {
             background: var(--bg-glass-hover);
-            transform: translateY(-3px);
+            transform: translateY(-3px) translateZ(0);
             border-color: rgba(0, 191, 255, 0.5);
             box-shadow: 0 8px 25px var(--cyan-glow);
         }
 
-        /* CANAL SELECCIONADO (BORDE DE NEÓN BRILLANTE) */
+        /* CANAL ACTIVO */
         .card-canal.activo {
-            border-color: #00ff9d;
-            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
-            background: rgba(25, 45, 38, 0.8);
+            border-color: #00ff9d !important;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3) !important;
+            background: rgba(25, 45, 38, 0.8) !important;
         }
 
         .canal-meta {
@@ -168,12 +178,12 @@
             background: linear-gradient(135deg, rgba(229, 62, 62, 0.6) 0%, rgba(155, 44, 44, 0.7) 100%);
         }
 
-        /* MENÚ DE APPS INFERIOR FLOTANTE (LIQUID GLASS) */
+        /* DOCK FLOTANTE */
         #dock-apps {
             position: fixed;
             bottom: 20px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateZ(0);
             background: rgba(15, 22, 33, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -185,6 +195,7 @@
             gap: 18px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             z-index: 9999;
+            will-change: transform;
         }
 
         .app-icono {
@@ -195,11 +206,12 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transform: translateZ(0);
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .app-icono:hover { 
-            transform: scale(1.2) translateY(-3px); 
+            transform: scale(1.15) translateY(-3px) translateZ(0); 
         }
 
         .espacio-final { height: 110px; }
@@ -246,7 +258,7 @@
 
     <div id="dock-apps">
         <div class="app-icono" style="background: #ff0000;" onclick="window.open('https://www.youtube.com', '_blank')">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </div>
         <div class="app-icono" style="background: #e50914;" onclick="window.open('https://www.netflix.com', '_blank')">
             <span style="font-weight:900; font-size:18px;">N</span>
@@ -263,7 +275,7 @@
 
     <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
     <script>
-        var player = videojs('reproductor-tv', { fluid: true });
+        const player = videojs('reproductor-tv', { fluid: true });
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
         const canalesABorrar = [
@@ -282,65 +294,74 @@
                 const texto = await respuesta.text();
                 const lineas = texto.split('\n');
                 
-                contenedor.innerHTML = '';
+                // Fragmento de memoria para optimizar la inyección DOM de golpe
+                const fragmento = document.createDocumentFragment();
                 let nombreCanal = '';
 
-                lineas.forEach(linea => {
+                for (let i = 0; i < lineas.length; i++) {
+                    const linea = lineas[i].trim();
+                    if (!linea) continue;
+
                     if (linea.startsWith('#EXTINF:')) {
-                        nombreCanal = linea.split(',')[1] || 'Canal';
-                        nombreCanal = nombreCanal.trim();
+                        nombreCanal = (linea.split(',')[1] || 'Canal').trim();
                     } else if (linea.startsWith('http')) {
-                        let urlCanal = linea.trim();
                         if (nombreCanal) {
-                            let nombreMin = nombreCanal.toLowerCase();
-                            let deberiaBorrar = canalesABorrar.some(canal => nombreMin.includes(canal));
+                            const nombreMin = nombreCanal.toLowerCase();
+                            const deberiaBorrar = canalesABorrar.some(canal => nombreMin.includes(canal));
 
                             if (!deberiaBorrar) {
-                                let card = document.createElement('div');
+                                const card = document.createElement('div');
                                 card.className = 'card-canal';
                                 
-                                let tagLive = document.createElement('span');
+                                const tagLive = document.createElement('span');
                                 tagLive.className = 'tag-live-premium';
                                 tagLive.innerText = 'LIVE';
                                 card.appendChild(tagLive);
 
-                                let metaTag = document.createElement('div');
+                                const metaTag = document.createElement('div');
                                 metaTag.className = 'canal-meta';
                                 metaTag.innerText = nombreCanal.split(' ')[0];
                                 card.appendChild(metaTag);
 
-                                let tituloTexto = document.createElement('div');
+                                const tituloTexto = document.createElement('div');
                                 tituloTexto.className = 'canal-titulo-texto';
                                 tituloTexto.innerText = nombreCanal;
                                 card.appendChild(tituloTexto);
                                 
+                                const urlActual = linea;
                                 card.onclick = function() {
                                     const reproductorContenedor = document.getElementById('contenedor-reproductor');
                                     reproductorContenedor.classList.add('activo');
                                     
-                                    player.src({ type: 'application/x-mpegURL', src: urlCanal });
+                                    player.src({ type: 'application/x-mpegURL', src: urlActual });
                                     player.play();
                                     
                                     reproductorContenedor.scrollIntoView({ behavior: 'smooth' });
 
                                     const todasLasTarjetas = contenedor.querySelectorAll('.card-canal');
-                                    todasLasTarjetas.forEach(t => t.classList.remove('activo'));
+                                    for (let j = 0; j < todasLasTarjetas.length; j++) {
+                                        todasLasTarjetas[j].classList.remove('activo');
+                                    }
                                     this.classList.add('activo');
                                 };
                                 
-                                contenedor.appendChild(card);
+                                fragmento.appendChild(card);
                             }
                             nombreCanal = '';
                         }
                     }
-                });
+                }
+
+                contenedor.innerHTML = '';
+                contenedor.appendChild(fragmento);
 
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Error al renderizar la rejilla optimizada:", error);
             }
         }
 
-        cargarCanales();
+        // Carga inmediata asíncrona
+        document.addEventListener('DOMContentLoaded', cargarCanales);
     </script>
 </body>
 </html>
