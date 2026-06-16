@@ -6,45 +6,42 @@
     <title>Sistema de Canales de Cristian Dias Trochez</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
-        /* CONFIGURACIÓN DE LOS TEMAS LÍQUIDOS */
+        /* CONFIGURACIÓN DE LOS TEMAS OPTIMIZADOS PARA RENDIMIENTO GRÁFICO */
         :root {
-            /* Tema Oscuro (Por defecto) */
-            --bg-gradiente: radial-gradient(circle at 50% 30%, #1a2230 0%, #0d1117 70%, #07090d 100%);
-            --bg-glass: rgba(25, 32, 45, 0.65);
-            --bg-glass-hover: rgba(40, 52, 74, 0.85);
-            --liquid-border: rgba(255, 255, 255, 0.12);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --bg-gradiente: radial-gradient(circle at 50% 30%, #161c26 0%, #0d1117 70%, #07090d 100%);
+            --bg-glass: rgba(23, 29, 41, 0.85);
+            --bg-glass-hover: rgba(36, 46, 64, 0.95);
+            --liquid-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
             --text-main: #edf2f7;
             --text-sub: #a0aec0;
-            --cyan-glow: rgba(0, 191, 255, 0.4);
+            --cyan-glow: rgba(0, 191, 255, 0.3);
             --verde-neon: #00ff9d;
             --canal-meta-color: #63b3ed;
         }
 
         [data-theme="claro"] {
-            /* Tema Claro Cristal */
             --bg-gradiente: radial-gradient(circle at 50% 30%, #e2e8f0 0%, #cbd5e0 70%, #a0aec0 100%);
-            --bg-glass: rgba(255, 255, 255, 0.6);
-            --bg-glass-hover: rgba(255, 255, 255, 0.85);
-            --liquid-border: rgba(0, 0, 0, 0.1);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --bg-glass: rgba(255, 255, 255, 0.9);
+            --bg-glass-hover: rgba(247, 250, 252, 0.98);
+            --liquid-border: rgba(0, 0, 0, 0.08);
+            --glass-shadow: 0 6px 20px rgba(31, 38, 135, 0.06);
             --text-main: #1a202c;
             --text-sub: #4a5568;
-            --cyan-glow: rgba(66, 153, 225, 0.3);
+            --cyan-glow: rgba(66, 153, 225, 0.2);
             --verde-neon: #0ece6c;
             --canal-meta-color: #2b6cb0;
         }
 
         [data-theme="azul"] {
-            /* Tema Azul Espacial */
-            --bg-gradiente: radial-gradient(circle at 50% 30%, #001f4d 0%, #00102a 70%, #000814 100%);
-            --bg-glass: rgba(0, 32, 77, 0.65);
-            --bg-glass-hover: rgba(0, 51, 128, 0.85);
-            --liquid-border: rgba(0, 191, 255, 0.2);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 191, 255, 0.2);
+            --bg-gradiente: radial-gradient(circle at 50% 30%, #00193d 0%, #000c20 70%, #00050f 100%);
+            --bg-glass: rgba(0, 26, 64, 0.85);
+            --bg-glass-hover: rgba(0, 43, 107, 0.95);
+            --liquid-border: rgba(0, 191, 255, 0.15);
+            --glass-shadow: 0 6px 20px rgba(0, 191, 255, 0.15);
             --text-main: #e2f1ff;
             --text-sub: #63b3ed;
-            --cyan-glow: rgba(0, 191, 255, 0.6);
+            --cyan-glow: rgba(0, 191, 255, 0.5);
             --verde-neon: #00ffcc;
             --canal-meta-color: #00bfff;
         }
@@ -57,25 +54,25 @@
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
-            text-rendering: optimizeLegibility;
+            text-rendering: discrete; /* Fuerza al navegador a no perder ciclos procesando fuentes */
             -webkit-font-smoothing: antialiased;
-            transition: background 0.4s ease;
         }
 
-        /* PANTALLA INTERACTIVA DE BIENVENIDA */
+        /* PANTALLA DE BIENVENIDA */
         #pantalla-bienvenida {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, #161f30 0%, #07090d 100%);
+            background: #0d1117;
             z-index: 100000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease, visibility 0.5s;
+            will-change: opacity;
+            transition: opacity 0.4s ease, visibility 0.4s;
         }
 
         #pantalla-bienvenida.oculto {
@@ -86,7 +83,6 @@
 
         .contenedor-intro {
             text-align: center;
-            animation: fadeInIntro 1s ease-out;
             padding: 20px;
         }
 
@@ -107,10 +103,8 @@
         }
 
         .btn-empezar {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(0, 255, 157, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid #00ff9d;
             color: #ffffff;
             font-size: 16px;
             font-weight: 700;
@@ -119,26 +113,22 @@
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            transition: all 0.3s ease;
+            transform: translateZ(0);
+            transition: transform 0.2s ease, background 0.2s ease;
         }
 
         .btn-empezar:hover {
-            transform: scale(1.08);
-            background: rgba(0, 255, 157, 0.1);
-            box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
+            transform: scale(1.05) translateZ(0);
+            background: rgba(0, 255, 157, 0.15);
         }
 
-        @keyframes fadeInIntro {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* INTERFAZ GENERAL */
+        /* INTERFAZ GENERAL CON FILTRADO DE CONTENIDO */
         #header-sistema {
             padding: 25px 4% 10px 4%;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            contain: content; /* Aísla el header del flujo de renderizado */
         }
 
         .titulo-marca {
@@ -171,6 +161,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             box-shadow: var(--glass-shadow);
             display: none;
+            contain: content;
         }
         #contenedor-reproductor.activo {
             display: block;
@@ -178,6 +169,7 @@
 
         .seccion-interfaz {
             padding: 5px 4% 20px 4%;
+            contain: content; /* Aísla las secciones para que no alteren los FPS de las demás */
         }
 
         .titulo-fila {
@@ -197,10 +189,9 @@
             width: 100%;
         }
 
+        /* TARJETAS DE CANALES TOTALMENTE ACELERADAS POR HARDWARE */
         .card-canal {
             background: var(--bg-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--liquid-border);
             border-radius: 14px;
             padding: 20px 15px;
@@ -213,22 +204,26 @@
             flex-direction: column;
             justify-content: flex-end;
             box-shadow: var(--glass-shadow);
-            transform: translateZ(0);
-            will-change: transform, border-color, box-shadow;
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            
+            /* Súper optimización para evitar lag en TVs antiguas */
+            contain: layout style;
+            transform: translateZ(0); 
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform, border-color;
+            transition: transform 0.15s ease-out, border-color 0.15s ease-out;
         }
 
         .card-canal:hover {
             background: var(--bg-glass-hover);
-            transform: translateY(-3px) translateZ(0);
+            transform: translateY(-2px) translateZ(0);
             border-color: rgba(0, 191, 255, 0.5);
-            box-shadow: 0 8px 25px var(--cyan-glow);
         }
 
         .card-canal.activo {
             border-color: var(--verde-neon) !important;
-            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3) !important;
-            background: rgba(25, 45, 38, 0.8) !important;
+            background: rgba(20, 38, 32, 0.95) !important;
+            transform: scale(0.98) translateZ(0);
         }
 
         .canal-meta {
@@ -249,43 +244,38 @@
             position: absolute;
             top: 10px;
             right: 12px;
-            background: linear-gradient(135deg, #e53e3e 0%, #9b2c2c 100%);
+            background: #e53e3e;
             color: #ffffff;
             font-size: 8px;
             font-weight: 800;
             padding: 2px 6px;
             border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            box-shadow: 0 2px 6px rgba(229, 62, 62, 0.4);
         }
 
         .card-mundial {
-            background: linear-gradient(135deg, rgba(43, 108, 176, 0.6) 0%, rgba(26, 54, 93, 0.7) 100%);
+            background: #1a365d;
         }
         .card-mundial.tvc {
-            background: linear-gradient(135deg, rgba(229, 62, 62, 0.6) 0%, rgba(155, 44, 44, 0.7) 100%);
+            background: #742a2a;
         }
 
-        /* DOCK FLOTANTE */
+        /* MENÚ INFERIOR ULTRA FLUIDO */
         #dock-apps {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%) translateZ(0);
-            background: rgba(15, 22, 33, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0f1521;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 10px 22px;
             border-radius: 24px;
             display: flex;
             align-items: center;
             gap: 18px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
             z-index: 9999;
-            will-change: transform;
+            contain: content;
+            backface-visibility: hidden;
         }
 
         .app-icono {
@@ -296,13 +286,12 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transform: translateZ(0);
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.15s ease-out;
             color: white;
         }
         .app-icono:hover { 
-            transform: scale(1.15) translateY(-3px) translateZ(0); 
+            transform: scale(1.1) translateZ(0); 
         }
 
         .espacio-final { height: 110px; }
@@ -330,7 +319,7 @@
     </div>
 
     <div id="contenedor-reproductor">
-        <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%"></video>
+        <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none" width="100%"></video>
     </div>
 
     <div class="seccion-interfaz">
@@ -365,11 +354,9 @@
         <div class="app-icono" style="background: #00a8e1; font-size:11px; font-weight:bold;" onclick="window.open('https://www.primevideo.com', '_blank')">
             prime
         </div>
-        
         <div class="app-icono" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); font-size: 18px;" onclick="cambiarTema()" title="Cambiar Tema">
             🎨
         </div>
-        
         <div class="app-icono" style="background: #2d3748; font-size: 18px;">
             ⚙️
         </div>
@@ -391,24 +378,27 @@
             "ltv", "maya tv"
         ];
 
-        // LOGICA DE TEMAS INTELIGENTES
         const temas = ["oscuro", "claro", "azul"];
         let temaActual = localStorage.getItem("tema-tv") || "oscuro";
         document.documentElement.setAttribute("data-theme", temaActual);
 
         function cambiarTema() {
-            let indice = temas.indexOf(temaActual);
-            indice = (indice + 1) % temas.length;
-            temaActual = temas[indice];
-            
+            let indice = themesIndex(temaActual);
+            temaActual = temas[(indice + 1) % 3];
             document.documentElement.setAttribute("data-theme", temaActual);
             localStorage.setItem("tema-tv", temaActual);
+        }
+
+        function themesIndex(theme) {
+            for(let i=0; i<3; i++) { if(temas[i] === theme) return i; }
+            return 0;
         }
 
         function entrarAlSistema() {
             document.getElementById('pantalla-bienvenida').classList.add('oculto');
         }
 
+        // FUNCIÓN DE ALTO RENDIMIENTO (60 FPS LOOP)
         async function cargarCanales() {
             try {
                 const contenedor = document.getElementById('contenedor-canales-dinamicos');
@@ -419,16 +409,27 @@
                 const fragmento = document.createDocumentFragment();
                 let nombreCanal = '';
 
-                for (let i = 0; i < lineas.length; i++) {
+                // Bucle indexado clásico: el método más rápido en Smart TVs antiguas
+                for (let i = 0, len = lineas.length; i < len; i++) {
                     const linea = lineas[i].trim();
                     if (!linea) continue;
 
-                    if (linea.startsWith('#EXTINF:')) {
-                        nombreCanal = (linea.split(',')[1] || 'Canal').trim();
+                    if (linea.charCodeAt(0) === 35) { // Evita evaluar texto pesado, 35 es el caracter '#'
+                        if (linea.startsWith('#EXTINF:')) {
+                            const partes = linea.split(',');
+                            nombreCanal = (partes[1] || 'Canal').trim();
+                        }
                     } else if (linea.startsWith('http')) {
                         if (nombreCanal) {
                             const nombreMin = nombreCanal.toLowerCase();
-                            const deberiaBorrar = canalesABorrar.some(canal => nombreMin.includes(canal));
+                            let deberiaBorrar = false;
+                            
+                            for (let j = 0; j < 17; j++) {
+                                if (nombreMin.indexOf(canalesABorrar[j]) !== -1) {
+                                    deberiaBorrar = true;
+                                    break;
+                                }
+                            }
 
                             if (!deberiaBorrar) {
                                 const card = document.createElement('div');
@@ -441,7 +442,7 @@
 
                                 const metaTag = document.createElement('div');
                                 metaTag.className = 'canal-meta';
-                                metaTag.innerText = nombreCanal.split(' ')[0];
+                                metaTag.innerText = nombreCanal.substring(0, 8); // Corte de string directo ultra veloz
                                 card.appendChild(metaTag);
 
                                 const tituloTexto = document.createElement('div');
@@ -451,16 +452,12 @@
                                 
                                 const urlActual = linea;
                                 card.onclick = function() {
-                                    const reproductorContenedor = document.getElementById('contenedor-reproductor');
-                                    reproductorContenedor.classList.add('activo');
-                                    
+                                    document.getElementById('contenedor-reproductor').classList.add('activo');
                                     player.src({ type: 'application/x-mpegURL', src: urlActual });
                                     player.play();
                                     
-                                    reproductorContenedor.scrollIntoView({ behavior: 'smooth' });
-
-                                    const todasLasTarjetas = contenedor.querySelectorAll('.card-canal');
-                                    for (let j = 0; j < todasLasTarjetas.length; j++) {
+                                    const todasLasTarjetas = contenedor.getElementsByClassName('card-canal');
+                                    for (let j = 0, tLen = todasLasTarjetas.length; j < tLen; j++) {
                                         todasLasTarjetas[j].classList.remove('activo');
                                     }
                                     this.classList.add('activo');
@@ -477,11 +474,12 @@
                 contenedor.appendChild(fragmento);
 
             } catch (error) {
-                console.error("Error:", error);
+                console.error(error);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', cargarCanales);
+        // Carga optimizada sin bloquear la renderización inicial
+        window.addEventListener('load', cargarCanales, { passive: true });
     </script>
 </body>
 </html>
