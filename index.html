@@ -228,9 +228,9 @@
             </div>
 
             <div class="seccion-titulo">Canales en Vivo (Filtrados)</div>
-            <div class="subseccion-titulo">🌐 Canales Activos y Estables</div>
+            <div class="subseccion-titulo">🌐 Canales Activos de la Lista M3U</div>
             <div id="lista-botones">
-                <p style="color: #718096; font-size: 13px;">Sincronizando frecuencias limpias...</p>
+                <p style="color: #718096; font-size: 13px;">Cargando lista original...</p>
             </div>
         </div>
 
@@ -248,7 +248,7 @@
         
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
-        // Lista de canales exactos que me pediste eliminar por completo
+        // Tu lista de canales a borrar (Filtro)
         const canalesABorrar = [
             "alfa & omega vision", "aviva tv", "campus tv", 
             "canal 5 el líder", "canal 7 talanga visión", 
@@ -256,14 +256,6 @@
             "cva tv", "edn tv", "girasol tv", "globo tv", 
             "inmaculada tv", "la 98.1 tv", "litoral atlántico", 
             "ltv", "maya tv"
-        ];
-
-        // Canales de repuesto 100% funcionales y estables para rellenar
-        const canalesExtra = [
-            { nombre: "⭐ HCH En Vivo", url: "https://hch.tv/live/stream.m3u8" },
-            { nombre: "⭐ Teleprogreso HD", url: "http://162.248.55.132:1935/teleprogreso/live/playlist.m3u8" },
-            { nombre: "⭐ Suyapa TV (Noticias)", url: "https://5b12165037d04.streamlock.net/suyapatv/suyapatv/playlist.m3u8" },
-            { nombre: "⭐ Canal 6 Honduras", url: "https://stream.canal6.hn/live/canal6.m3u8" }
         ];
 
         async function cargarCanales() {
@@ -274,15 +266,8 @@
                 const lineas = texto.split('\n');
                 
                 contenedor.innerHTML = '';
-                
-                // 1. Primero metemos los canales estables de repuesto
-                canalesExtra.forEach(canal => {
-                    crearBotonCanal(canal.nombre, canal.url, contenedor);
-                });
-
                 let nombreCanal = '';
 
-                // 2. Cargamos la lista de internet saltándonos los que me pediste borrar
                 lineas.forEach(linea => {
                     if (linea.startsWith('#EXTINF:')) {
                         nombreCanal = linea.split(',')[1] || 'Canal de Transmisión';
@@ -290,12 +275,27 @@
                     } else if (linea.startsWith('http')) {
                         let urlCanal = linea.trim();
                         if (nombreCanal) {
-                            // Convertimos a minúsculas para comprobar si está en la lista negra
                             let nombreMin = nombreCanal.toLowerCase();
+                            
+                            // Comprobar si el canal actual está en la lista de borrados
                             let deberiaBorrar = canalesABorrar.some(canal => nombreMin.includes(canal));
 
+                            // Si no está en la lista negra, lo agrega normalmente
                             if (!deberiaBorrar) {
-                                crearBotonCanal(nombreCanal, urlCanal, contenedor);
+                                let boton = document.createElement('button');
+                                boton.className = 'canal-btn';
+                                boton.innerText = nombreCanal;
+                                
+                                boton.onclick = function() {
+                                    player.src({ type: 'application/x-mpegURL', src: urlCanal });
+                                    player.play();
+                                    
+                                    const botones = contenedor.querySelectorAll('.canal-btn');
+                                    botones.forEach(b => b.classList.remove('active'));
+                                    this.classList.add('active');
+                                };
+                                
+                                contenedor.appendChild(boton);
                             }
                             nombreCanal = '';
                         }
@@ -306,23 +306,6 @@
                 console.error("Error cargando streams:", error);
                 document.getElementById('lista-botones').innerHTML = '<p style="color:#ff4757;">Error al conectar con el servidor de canales.</p>';
             }
-        }
-
-        function crearBotonCanal(nombre, url, contenedor) {
-            let boton = document.createElement('button');
-            boton.className = 'canal-btn';
-            boton.innerText = nombre;
-            
-            boton.onclick = function() {
-                player.src({ type: 'application/x-mpegURL', src: url });
-                player.play();
-                
-                const botones = contenedor.querySelectorAll('.canal-btn');
-                botones.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            };
-            
-            contenedor.appendChild(boton);
         }
 
         cargarCanales();
