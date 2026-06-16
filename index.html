@@ -30,7 +30,6 @@
             scroll-behavior: smooth;
         }
 
-        /* BOTONERA VERTICAL IZQUIERDA PEQUEÑA CORREGIDA */
         #control-vertical-tv {
             position: fixed;
             left: 15px;
@@ -68,7 +67,6 @@
             outline: none;
         }
 
-        /* CONTENEDOR FLUIDO CORRECTO */
         .contenido-principal {
             padding-left: 80px;
             padding-right: 20px;
@@ -140,7 +138,6 @@
             width: 100%;
         }
 
-        /* TARJETAS LIQUID GLASS */
         .card-canal {
             background: var(--liquid-bg);
             border-radius: 18px;
@@ -209,7 +206,6 @@
             border-radius: 5px;
         }
 
-        /* CONTROLES HORIZONTALES PEQUEÑOS */
         .controles-tv-carrusel {
             display: flex;
             gap: 12px;
@@ -233,7 +229,6 @@
             outline: none;
         }
 
-        /* DOCK GENERAL CORREGIDO */
         #dock-apps {
             position: fixed;
             bottom: 20px;
@@ -345,7 +340,6 @@
             }
         }
 
-        // CONTROL D-PAD SUTILA COORDENADO
         document.addEventListener('keydown', function(e) {
             const elementosEnfocables = Array.from(document.querySelectorAll('.card-canal, .btn-tv-flecha, .btn-control-total, .app-icono'));
             let indiceActual = elementosEnfocables.indexOf(document.activeElement);
@@ -387,7 +381,7 @@
                         
                         for (let j = 0; j < canalesABorrar.length; j++) {
                             if (nombreMin.indexOf(canalesABorrar[j]) !== -1) {
-                                deberiaBorrar = true; // CORREGIDO: Se quitó el punto accidental del bug anterior
+                                deberiaBorrar = true;
                                 break;
                             }
                         }
