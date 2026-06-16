@@ -85,25 +85,37 @@
     <script src="https://vjs.zencdn.net/7.20.3/video-js.js"></script>
     <script>
         // ===================================================
-        // 🔑 BASE DE DATOS DE CLIENTES ACTUADOS (CORTA AQUÍ)
+        // 🔑 BASE DE DATOS DE CLIENTES ACTIVADOS
         // ===================================================
         const CLIENTES_ACTIVOS = [
-            'CRISTIAN2026',    // Tu clave maestra
-            'VECINO_PAGADO',   // Clave que le das a un cliente
-            'CABLE_SULA_03'    // Otra clave autorizada
-            // Si el vecino de la par no te paga, vienes aquí, borras su línea, guardas cambios y listo!
+            'CRISTIAN2026',    // Tu clave maestra de administrador
+            'PASS TV'          // Clave para la tele de Sandra
         ];
 
         var player = videojs('reproductor-tv', { fluid: true });
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
+        // COMPROBACIÓN AUTOMÁTICA AL INICIAR LA PÁGINA
+        window.onload = function() {
+            const claveGuardada = localStorage.getItem('mi_clave_tv');
+            
+            if (claveGuardada && CLIENTES_ACTIVOS.includes(claveGuardada)) {
+                // Si ya tiene clave válida guardada, entra directo sin preguntar
+                document.getElementById('pantalla-bloqueo').style.display = 'none';
+                cargarCanales();
+            }
+            // Si no hay clave o la que estaba guardada la borraste de GitHub, se queda bloqueado pidiendo clave
+        };
+
         function verificarAcceso() {
             const inputClave = document.getElementById('clave-cliente').value.trim().toUpperCase();
             
-            // Revisa si la clave ingresada existe en la lista de activos
             if (CLIENTES_ACTIVOS.includes(inputClave)) {
-                document.getElementById('pantalla-bloqueo').style.display = 'none'; // Quita el bloqueo
-                cargarCanales(); // Inicia el sistema
+                // Guarda la clave en la memoria del televisor para siempre
+                localStorage.setItem('mi_clave_tv', inputClave);
+                
+                document.getElementById('pantalla-bloqueo').style.display = 'none';
+                cargarCanales();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
             }
