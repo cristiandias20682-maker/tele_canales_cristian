@@ -3,25 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cristian Dias Trochez - Liquid Glass Premium IPTV</title>
+    <title>Cristian Dias Trochez - Premium Liquid IPTV</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
-        /* PALETA DE COLORES LIQUID GLASS (ESTILO iOS 26 DE TV) */
         :root {
             --bg-gradiente: radial-gradient(circle at 50% 30%, #0a111e 0%, #05070b 100%);
-            
-            /* Fondos tipo cápsula de cristal líquido traslúcido */
             --liquid-bg: linear-gradient(135deg, rgba(25, 36, 56, 0.45) 0%, rgba(13, 19, 31, 0.7) 100%);
             --liquid-bg-hover: linear-gradient(135deg, rgba(35, 52, 82, 0.6) 0%, rgba(18, 27, 46, 0.85) 100%);
-            
-            /* Bordes de cristal con reflejo de luz */
-            --liquid-border: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.03) 60%, rgba(0, 191, 255, 0.1) 100%);
-            
-            /* Brillos y sombras de profundidad */
             --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.15);
             --neon-cyan: 0 0 20px rgba(0, 191, 255, 0.4);
             --neon-verde: 0 0 25px rgba(0, 255, 157, 0.6);
-            
             --text-main: #f7fafc;
             --text-sub: #90cdf4;
         }
@@ -36,68 +27,103 @@
             overflow-x: hidden;
             text-rendering: discrete;
             -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        /* DISEÑO DE PANEL IZQUIERDO PEQUEÑO */
+        #control-vertical-tv {
+            position: fixed;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%) translateZ(0);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10000;
+            background: rgba(10, 15, 24, 0.6);
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .btn-control-total {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-control-total:hover, .btn-control-total:focus {
+            border-color: #00ff9d;
+            box-shadow: var(--neon-verde);
+            transform: scale(1.1);
+            outline: none;
+        }
+
+        .contenido-principal {
+            padding-left: 75px;
+            padding-right: 4%;
         }
 
         #header-sistema {
-            padding: 25px 4% 5px 4%;
+            padding: 20px 0 5px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .titulo-marca {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1px;
             background: linear-gradient(90deg, #ffffff, #90cdf4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin: 0;
         }
 
-        /* REPRODUCTOR ENMARCADO EN CRISTAL LÍQUIDO */
         #contenedor-reproductor {
-            width: 92%;
+            width: 100%;
             max-width: 1100px;
-            margin: 15px auto 25px auto;
+            margin: 10px 0 20px 0;
             background: #000;
             border-radius: 24px;
             overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
             border: 2px solid rgba(255, 255, 255, 0.08);
-        }
-
-        /* EFECTO DE LUZ DE FONDO PARA EL REPRO */
-        #contenedor-reproductor::after {
-            content: '';
-            position: absolute;
-            top: -10%; left: -10%; width: 120%; height: 120%;
-            background: radial-gradient(circle, rgba(0, 191, 255, 0.1) 0%, transparent 70%);
-            z-index: -1;
-            pointer-events: none;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
         }
 
         .seccion-interfaz {
-            padding: 10px 4% 15px 4%;
+            padding: 10px 0;
             position: relative;
         }
 
         .titulo-fila {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 15px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
             color: #cbd5e0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .grid-cuadros {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            display: flex;
+            gap: 15px;
             width: 100%;
+            overflow-x: auto;
+        }
+
+        .grid-cuadros::-webkit-scrollbar, .grid-carrusel-infinito::-webkit-scrollbar {
+            display: none;
         }
 
         .wrapper-carrusel {
@@ -107,64 +133,51 @@
 
         .grid-carrusel-infinito {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             overflow-x: auto;
             scroll-behavior: smooth;
-            scroll-snap-type: x mandatory;
-            padding: 15px 0;
+            padding: 5px 0;
             width: 100%;
         }
 
-        .grid-carrusel-infinito::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* TARJETAS CON DISEÑO LIQUID GLASS */
+        /* TARJETAS CON SOPORTE DE ENFOQUE (TABINDEX) */
         .card-canal {
             background: var(--liquid-bg);
-            border-radius: 20px;
-            padding: 22px 18px;
+            border-radius: 18px;
+            padding: 18px 14px;
             text-align: left;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            min-height: 80px;
-            width: 200px;
+            height: 70px;
+            width: 190px;
             flex-shrink: 0;
-            scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             box-shadow: var(--glass-shadow);
-            
-            /* Optimización total para TV: previene parpadeos */
             transform: translateZ(0); 
-            backface-visibility: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* CAPA SUPERIOR DE BRILLO TIPO CRISTAL (REFLEJO ASIMÉTRICO) */
         .card-canal::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+            top: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
             pointer-events: none;
-            border-top-left-radius: 19px;
-            border-top-right-radius: 19px;
         }
 
-        /* ENFOQUE / HOVER ESTILO LIQUID GLOW */
-        .card-canal:hover {
+        /* ENFOQUE TANTO POR CONTROL REMOTO COMO POR MOUSE */
+        .card-canal:hover, .card-canal:focus {
             background: var(--liquid-bg-hover);
-            transform: scale(1.06) translateY(-2px) translateZ(0);
+            transform: scale(1.05) translateZ(0);
             border-color: rgba(0, 191, 255, 0.6);
             box-shadow: var(--glass-shadow), var(--neon-cyan);
+            outline: none;
         }
 
-        /* ESTADO ACTIVO (CANAL QUE SE ESTÁ REPRODUCIENDO) */
         .card-canal.activo {
             border-color: #00ff9d !important;
             background: linear-gradient(135deg, rgba(10, 48, 34, 0.75) 0%, rgba(5, 28, 20, 0.9) 100%) !important;
@@ -172,163 +185,135 @@
         }
 
         .canal-meta {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-sub);
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
+            margin-bottom: 3px;
         }
 
         .canal-titulo-texto {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            line-height: 1.4;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            line-height: 1.3;
         }
 
         .tag-live-premium {
             position: absolute;
-            top: 12px;
-            right: 14px;
+            top: 10px; right: 12px;
             background: linear-gradient(180deg, #ff4b4b 0%, #c52828 100%);
             color: #ffffff;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.15);
+            padding: 2px 6px;
+            border-radius: 5px;
         }
 
-        /* Variantes de color de fondo para Señales Exclusivas */
-        .card-mundial { background: linear-gradient(135deg, rgba(26, 54, 93, 0.6) 0%, rgba(15, 32, 57, 0.8) 100%); }
-        .card-mundial.tvc { background: linear-gradient(135deg, rgba(116, 42, 42, 0.6) 0%, rgba(74, 26, 26, 0.8) 100%); }
-
-        /* CONTROLES DE DIRECCIÓN (BARRAS DE NAVEGACIÓN TELE) */
+        /* FLECHAS DE DIRECCIÓN HORIZONTALES PEQUEÑAS */
         .controles-tv-carrusel {
             display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-top: 10px;
         }
 
         .btn-tv-flecha {
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-main);
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
-            padding: 12px 35px;
-            border-radius: 16px;
+            padding: 6px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            box-shadow: var(--glass-shadow);
-            transform: translateZ(0);
-            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .btn-tv-flecha:hover {
+        .btn-tv-flecha:hover, .btn-tv-flecha:focus {
             border-color: #00ff9d;
-            background: linear-gradient(180deg, rgba(40, 55, 80, 0.9) 0%, rgba(20, 30, 55, 0.95) 100%);
-            transform: scale(1.08) translateZ(0);
-            box-shadow: var(--glass-shadow), var(--neon-verde);
+            background: rgba(40, 55, 80, 0.8);
+            outline: none;
         }
 
-        /* DOCK DE APPS ESTILO CÁPSULA FLUIDA DE CRISTAL */
         #dock-apps {
             position: fixed;
-            bottom: 25px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%) translateZ(0);
             background: linear-gradient(180deg, rgba(20, 28, 43, 0.85) 0%, rgba(10, 15, 24, 0.95) 100%);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 12px 26px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 25px;
             display: flex;
             align-items: center;
-            gap: 22px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.2);
+            gap: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
             z-index: 9999;
-            backdrop-filter: blur(5px); /* Suave desenfoque de fondo */
         }
 
         .app-icono {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            transform: translateZ(0);
-            transition: transform 0.15s ease-out;
         }
 
-        .app-icono:hover {
-            transform: scale(1.15) translateY(-4px) translateZ(0);
-        }
-
-        .espacio-final { height: 130px; }
+        .espacio-final { height: 110px; }
     </style>
 </head>
 <body>
 
-    <div id="header-sistema">
-        <div>
+    <div id="control-vertical-tv">
+        <button class="btn-control-total" onclick="navegarVertical('arriba')" title="Subir">▲</button>
+        <button class="btn-control-total" onclick="navegarVertical('abajo')" title="Bajar">▼</button>
+    </div>
+
+    <div class="contenido-principal">
+        <div id="header-sistema">
             <h1 class="titulo-marca">SISTEMA DE CANALES DE CRISTIAN DIAS TROCHEZ</h1>
         </div>
-    </div>
 
-    <div id="contenedor-reproductor">
-        <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%"></video>
-    </div>
+        <div id="contenedor-reproductor">
+            <video id="reproductor-tv" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%"></video>
+        </div>
 
-    <div class="seccion-interfaz">
-        <div class="titulo-fila mundiales">🏆 SEÑALES EXCLUSIVAS (MUNDIAL)</div>
-        <div class="grid-cuadros">
-            <div class="card-canal card-mundial" onclick="window.open('https://www.televicentro.com', '_blank')">
-                <span class="tag-live-premium">WEB</span>
-                <div class="canal-meta">Televicentro</div>
-                <div class="canal-titulo-texto">Ver CANAL 5 (Oficial)</div>
-            </div>
-            <div class="card-canal card-mundial tvc" onclick="window.open('https://www.deportestvc.com', '_blank')">
-                <span class="tag-live-premium">WEB</span>
-                <div class="canal-meta">Deportes TVC</div>
-                <div class="canal-titulo-texto">Ver DEPORTES TVC</div>
+        <div class="seccion-interfaz" id="sec-exclusivas">
+            <div class="titulo-fila">🏆 SEÑALES EXCLUSIVAS (MUNDIAL)</div>
+            <div class="grid-cuadros">
+                <div class="card-canal" tabindex="0" onclick="window.open('https://www.televicentro.com', '_blank')">
+                    <span class="tag-live-premium">WEB</span>
+                    <div class="canal-meta">Televicentro</div>
+                    <div class="canal-titulo-texto">Ver CANAL 5 (Oficial)</div>
+                </div>
+                <div class="card-canal" tabindex="0" onclick="window.open('https://www.deportestvc.com', '_blank')">
+                    <span class="tag-live-premium">WEB</span>
+                    <div class="canal-meta">Deportes TVC</div>
+                    <div class="canal-titulo-texto">Ver DEPORTES TVC</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="seccion-interfaz">
-        <div class="titulo-fila canales">🌐 CANALES NACIONALES (AUTOMÁTICOS)</div>
-        
-        <div class="wrapper-carrusel">
-            <div class="grid-carrusel-infinito" id="contenedor-canales-dinamicos">
+        <div class="seccion-interfaz" id="sec-nacionales">
+            <div class="titulo-fila">🌐 CANALES NACIONALES (AUTOMÁTICOS)</div>
+            <div class="wrapper-carrusel">
+                <div class="grid-carrusel-infinito" id="contenedor-canales-dinamicos">
+                    </div>
+                
+                <div class="controles-tv-carrusel">
+                    <button class="btn-tv-flecha" tabindex="0" onclick="moverCarrusel('izquierda')">◀ IZQ</button>
+                    <button class="btn-tv-flecha" tabindex="0" onclick="moverCarrusel('derecha')">DER ▶</button>
                 </div>
-            
-            <div class="controles-tv-carrusel">
-                <button class="btn-tv-flecha" onclick="moverCarrusel('izquierda')">◀ IZQUIERDA</button>
-                <button class="btn-tv-flecha" onclick="moverCarrusel('derecha')">DERECHA ▶</button>
             </div>
         </div>
     </div>
 
     <div id="dock-apps">
-        <div class="app-icono" style="background: #ff0000;" onclick="window.open('https://www.youtube.com', '_blank')">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        <div class="app-icono" style="background: #ff0000;" tabindex="0" onclick="window.open('https://www.youtube.com', '_blank')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </div>
-        <div class="app-icono" style="background: #e50914;" onclick="window.open('https://www.netflix.com', '_blank')">
-            <span style="font-weight:900; font-size:20px;">N</span>
-        </div>
-        <div class="app-icono" style="background: #00a8e1; font-size:12px; font-weight:bold;" onclick="window.open('https://www.primevideo.com', '_blank')">
-            prime
-        </div>
-        <div class="app-icono" style="background: #313d4f; font-size: 20px;">
-            ⚙️
-        </div>
+        <div class="app-icono" style="background: #e50914;" tabindex="0" onclick="window.open('https://www.netflix.com', '_blank')"><span style="font-weight:900;color:white;">N</span></div>
+        <div class="app-icono" style="background: #00a8e1; font-size:10px; font-weight:bold; color:white;" tabindex="0" onclick="window.open('https://www.primevideo.com', '_blank')">PV</div>
     </div>
 
     <div class="espacio-final"></div>
@@ -339,25 +324,46 @@
         const URL_M3U = 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/hn.m3u';
 
         const canalesABorrar = [
-            "alfa & omega vision", "aviva tv", "campus tv", 
-            "canal 5 el líder", "canal 7 talanga visión", 
-            "canal 32 sto", "cholusat sur 36", "deportes tvc", 
-            "cva tv", "edn tv", "girasol tv", "globo tv", 
-            "inmaculada tv", "la 98.1 tv", "litoral atlántico", 
-            "ltv", "maya tv"
+            "alfa & omega vision", "aviva tv", "campus tv", "canal 5 el líder", 
+            "canal 7 talanga visión", "canal 32 sto", "cholusat sur 36", 
+            "deportes tvc", "cva tv", "edn tv", "girasol tv", "globo tv", 
+            "inmaculada tv", "la 98.1 tv", "litoral atlántico", "ltv", "maya tv"
         ];
 
-        // Mover carrusel fluidamente
         function moverCarrusel(direccion) {
             const carrusel = document.getElementById('contenedor-canales-dinamicos');
-            const tarjetaAncho = 240; // Ancho de tarjeta + gap recalculado para movimiento cómodo
-            
-            if (direccion === 'izquierda') {
-                carrusel.scrollBy({ left: -tarjetaAncho, behavior: 'smooth' });
+            const desplazamiento = 210;
+            carrusel.scrollBy({ left: direccion === 'izquierda' ? -desplazamiento : desplazamiento, behavior: 'smooth' });
+        }
+
+        function navegarVertical(direccion) {
+            if (direccion === 'arriba') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                carrusel.scrollBy({ left: tarjetaAncho, behavior: 'smooth' });
+                document.getElementById('sec-nacionales').scrollIntoView({ behavior: 'smooth' });
             }
         }
+
+        // NUEVA FUNCIÓN INTERACTIVA: SOPORTE DE ENFOQUE D-PAD CON EL CONTROL REMOTO
+        document.addEventListener('keydown', function(e) {
+            const elementosEnfocables = Array.from(document.querySelectorAll('.card-canal, .btn-tv-flecha, .btn-control-total, .app-icono'));
+            let indiceActual = elementosEnfocables.indexOf(document.activeElement);
+
+            if (e.key === 'ArrowRight') {
+                if (indiceActual < elementosEnfocables.length - 1) elementosEnfocables[indiceActual + 1].focus();
+            } else if (e.key === 'ArrowLeft') {
+                if (indiceActual > 0) elementosEnfocables[indiceActual - 1].focus();
+            } else if (e.key === 'ArrowDown') {
+                navegarVertical('abajo');
+                // Salta al carrusel inferior automáticamente
+                const primerCanalNacional = document.querySelector('#contenedor-canales-dinamicos .card-canal');
+                if (primerCanalNacional) primerCanalNacional.focus();
+            } else if (e.key === 'ArrowUp') {
+                navegarVertical('arriba');
+                const primerCanalExclusivo = document.querySelector('#sec-exclusivas .card-canal');
+                if (primerCanalExclusivo) primerCanalExclusivo.focus();
+            }
+        });
 
         async function cargarCanales() {
             try {
@@ -365,76 +371,68 @@
                 const respuesta = await fetch(URL_M3U);
                 const texto = await respuesta.text();
                 const lineas = texto.split('\n');
-                
                 const fragmento = document.createDocumentFragment();
                 let nombreCanal = '';
 
-                for (let i = 0, len = lineas.length; i < len; i++) {
+                for (let i = 0; i < lineas.length; i++) {
                     const linea = lineas[i].trim();
                     if (!linea) continue;
 
-                    if (linea.charCodeAt(0) === 35) {
-                        if (linea.startsWith('#EXTINF:')) {
-                            const partes = linea.split(',');
-                            nombreCanal = (partes[1] || 'Canal').trim();
+                    if (linea.startsWith('#EXTINF:')) {
+                        const partes = linea.split(',');
+                        nombreCanal = (partes[1] || 'Canal').trim();
+                    } else if (linea.startsWith('http') && nombreCanal) {
+                        const nombreMin = nombreCanal.toLowerCase();
+                        let deberiaBorrar = false;
+                        
+                        for (let j = 0; j < canalesABorrar.length; j++) {
+                            if (nombreMin.indexOf(canalesABorrar[j]) !== -1) {
+                                .deberiaBorrar = true;
+                                break;
+                            }
                         }
-                    } else if (linea.startsWith('http')) {
-                        if (nombreCanal) {
-                            const nombreMin = nombreCanal.toLowerCase();
-                            let deberiaBorrar = false;
+
+                        if (!deberiaBorrar) {
+                            const card = document.createElement('div');
+                            card.className = 'card-canal';
+                            card.tabIndex = 0; // Hace que la tele reconozca la tarjeta mediante teclado/control
                             
-                            for (let j = 0, bLen = canalesABorrar.length; j < bLen; j++) {
-                                if (nombreMin.indexOf(canalesABorrar[j]) !== -1) {
-                                    deberiaBorrar = true;
-                                    break;
-                                }
-                            }
+                            const tagLive = document.createElement('span');
+                            tagLive.className = 'tag-live-premium';
+                            tagLive.innerText = 'LIVE';
+                            card.appendChild(tagLive);
 
-                            if (!deberiaBorrar) {
-                                const card = document.createElement('div');
-                                card.className = 'card-canal';
-                                
-                                const tagLive = document.createElement('span');
-                                tagLive.className = 'tag-live-premium';
-                                tagLive.innerText = 'LIVE';
-                                card.appendChild(tagLive);
+                            const metaTag = document.createElement('div');
+                            metaTag.className = 'canal-meta';
+                            metaTag.innerText = nombreCanal.substring(0, 12);
+                            card.appendChild(metaTag);
 
-                                const metaTag = document.createElement('div');
-                                metaTag.className = 'canal-meta';
-                                metaTag.innerText = nombreCanal.substring(0, 12);
-                                card.appendChild(metaTag);
+                            const tituloTexto = document.createElement('div');
+                            tituloTexto.className = 'canal-titulo-texto';
+                            tituloTexto.innerText = nombreCanal;
+                            card.appendChild(tituloTexto);
+                            
+                            const urlActual = linea;
+                            
+                            const ejecutarSeleccion = function() {
+                                player.src({ type: 'application/x-mpegURL', src: urlActual });
+                                player.play();
+                                const todas = contenedor.getElementsByClassName('card-canal');
+                                for (let j = 0; j < todas.length; j++) todas[j].classList.remove('activo');
+                                card.classList.add('activo');
+                            };
 
-                                const tituloTexto = document.createElement('div');
-                                tituloTexto.className = 'canal-titulo-texto';
-                                tituloTexto.innerText = nombreCanal;
-                                card.appendChild(tituloTexto);
-                                
-                                const urlActual = linea;
-                                
-                                card.onclick = function() {
-                                    player.src({ type: 'application/x-mpegURL', src: urlActual });
-                                    player.play();
-                                    
-                                    const todasLasTarjetas = contenedor.getElementsByClassName('card-canal');
-                                    for (let j = 0, tLen = todasLasTarjetas.length; j < tLen; j++) {
-                                        todasLasTarjetas[j].classList.remove('activo');
-                                    }
-                                    this.classList.add('activo');
-                                };
-                                
-                                fragmento.appendChild(card);
-                            }
-                            nombreCanal = '';
+                            card.onclick = ejecutarSeleccion;
+                            card.onkeydown = function(e) { if(e.key === 'Enter') ejecutarSeleccion(); };
+                            
+                            fragmento.appendChild(card);
                         }
+                        nombreCanal = '';
                     }
                 }
-
                 contenedor.innerHTML = '';
                 contenedor.appendChild(fragmento);
-
-            } catch (error) {
-                console.error(error);
-            }
+            } catch (error) { console.error(error); }
         }
 
         window.addEventListener('load', cargarCanales, { passive: true });
